@@ -12,29 +12,12 @@ class AuthController extends Controller
 {
     public function login_admin(Request $request)
     {
-        $user = new User;
-        $user->user_username = 'admin';
-        $user->password  = Hash::make('admin');
-        $user->user_gambar = 'gambar admin';
-        $user->user_no_hp = '345345';
-        $user->user_email = 'email';
-        $user->user_alamat = 'alamat';
-        $user->user_nama = 'user nama';
-        $user->role = 'admin';
-        $user->user_status = 'aktif';
-        $user->save();
-
-        $credentials = $request->validate([
-            'user_username' => ['required'],
-            'password' => ['required'],
-        ]);
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            if ($user->role === 'admin') {
-                return redirect()->route('dashboard-admin');
-            }
+        if (Auth::guard('admin')->attempt(['user_username' => $request->user_username, 'password' => $request->password])) {
+            return redirect()->route('dashboard-admin');
+        } elseif (Auth::guard('user')->attempt(['user_username' => $request->user_username, 'password' => $request->password])) {
+            return redirect()->route('dashboard-pelatih');
+        } else {
+            return redirect()->back();
         }
-
-        return redirect()->route('login-admin');
     }
 }

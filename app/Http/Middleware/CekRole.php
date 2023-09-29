@@ -15,8 +15,7 @@ class CekRole
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        // periksa apakah pengguna memiliki peran yang sesuai
-        if ($request->user() && $request->user()->role === $role) {
+        if ($request->user()->role) {
             return $next($request);
         }
 

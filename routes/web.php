@@ -23,6 +23,6 @@ Route::view('/pelatih', 'login-pelatih')->name('login-atlet');
 
 Route::post('/admin', [AuthController::class, 'login_admin']);
 
-Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['auth:admin', 'role:admin, pelatih'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard-admin');
 });
