@@ -13,7 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin-pelatih.dashboard');
+        $user = User::all();
+        return view('admin-pelatih.user', compact('user'));
     }
 
     /**
@@ -29,7 +30,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

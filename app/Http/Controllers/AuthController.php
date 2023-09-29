@@ -13,9 +13,9 @@ class AuthController extends Controller
     public function login_admin(Request $request)
     {
         if (Auth::guard('admin')->attempt(['user_username' => $request->user_username, 'password' => $request->password])) {
-            return redirect()->route('dashboard-admin');
+            return redirect()->route('dashboard');
         } elseif (Auth::guard('user')->attempt(['user_username' => $request->user_username, 'password' => $request->password])) {
-            return redirect()->route('dashboard-pelatih');
+            return redirect()->route('dashboard');
         } else {
             return redirect()->back();
         }
