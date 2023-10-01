@@ -26,13 +26,15 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::view('/admin', 'login-admin')->name('login-admin');
-Route::view('/atlet', 'login-atlet')->name('login-pelatih');
+Route::view('/atlet', 'login-atlet')->name('login-atlet');
 
 Route::post('/admin', [AuthController::class, 'login_admin']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout-admin');
 
-Route::group(['middleware' => ['auth:admin', 'role:admin, pelatih'], 'prefix' => 'admin'], function () {
+route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('user', UserController::class);
     Route::resource('jadwal', JadwalController::class);
     Route::resource('pertemuan', PertemuanController::class);
     Route::resource('absen', AbsenController::class);

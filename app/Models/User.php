@@ -11,4 +11,9 @@ class User extends AuthUser
     use HasFactory;
 
     protected $guarded = 'id';
+
+    public function isAdmin()
+    {
+        $this->role = 'admin';
+    }
 }

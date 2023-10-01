@@ -4,21 +4,22 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CekRole
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->role) {
+        if (auth()->check() && auth()->user()->role === 'admin' || auth()->check() && auth()->user()->role === 'pelatih') {
             return $next($request);
         }
 
-        return abort(403, "Unauthorized");
+        return redirect()->route('login-admin');
     }
 }
