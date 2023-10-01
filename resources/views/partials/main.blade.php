@@ -69,7 +69,9 @@
   <link rel="stylesheet" href="{{ asset('template-admin/dist/css/adminlte.min.css')}}">
 </head>
 
+
 <body class="hold-transition sidebar-mini layout-fixed">
+  @include('sweetalert::alert')
   <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
@@ -245,6 +247,27 @@
 
   @yield('javascript')
   <!-- ./wrapper -->
+
+  <script>
+    var elementToFade = document.getElementById("elementToFade");
+    var delayInMilliseconds = 2000;
+  
+    setTimeout(function () {
+      var opacity = 1;
+      var interval = 50;
+      var decrement = 0.05;
+  
+      var fadeEffect = setInterval(function () {
+          if (opacity > 0) {
+              opacity -= decrement;
+              elementToFade.style.opacity = opacity;
+          } else {
+              clearInterval(fadeEffect);
+              elementToFade.style.display = "none";
+        }
+      }, interval);
+  }, delayInMilliseconds);
+  </script>
 
   <!-- jQuery -->
   <script src="{{ asset('template-admin/plugins/jquery/jquery.min.js')}}"></script>

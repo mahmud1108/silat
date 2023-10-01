@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Cache\RedisTagSet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
@@ -29,6 +27,7 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
         if (Auth::attempt($creds) === true) {
+            toast('Berhasil login sebagai ' . auth()->user()->role, 'success');
             return redirect()->route('dashboard');
         }
         return redirect()->route('login-admin');

@@ -22,6 +22,15 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'user_nama' => 'string',
+            'user_username' => 'string|min:8|unique:users',
+            'password' => 'string|min:8|confirmed',
+            'user_no_hp' => 'string|unique:users',
+            'user_email' => 'email|string|unique:users',
+            'user_alamat' => 'string',
+            'user_status' => 'string',
+            'user_gambar' => 'image'
+        ];
     }
 }

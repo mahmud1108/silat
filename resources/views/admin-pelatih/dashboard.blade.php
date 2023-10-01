@@ -22,15 +22,13 @@
   <div class="container-fluid">
     <!-- Small boxes (Stat box) -->
     <div class="row">
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
             <h3>
-              {{--
-              <?= $jadwal ?> --}}
+              {{ $jadwal }}
             </h3>
-
             <p>Jadwal</p>
           </div>
           <div class="icon">
@@ -41,13 +39,12 @@
         </div>
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
             <h3>
-              {{--
-              <?= $pertemuan ?> --}}
+              {{ $pertemuan }}
             </h3>
 
             <p>Pertemuan</p>
@@ -60,16 +57,15 @@
         </div>
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
             <h3>
-              {{--
-              <?= $user ?> --}}
+              {{ $atlet }}
             </h3>
 
-            <p>User</p>
+            <p>Atlet</p>
           </div>
           <div class="icon">
             <i class="ion ion-person-add"></i>
@@ -77,25 +73,6 @@
           <a href="user_tampil.php" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-danger">
-          <div class="inner">
-            <h3>
-              {{--
-              <?= $atlet ?> --}}
-            </h3>
-
-            <p>Unique Visitors</p>
-          </div>
-          <div class="icon">
-            <i class="fa fa-user"></i>
-          </div>
-          <a href="atlet_tampil.php" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
     </div>
     <!-- /.row -->
     <!-- Main row -->
