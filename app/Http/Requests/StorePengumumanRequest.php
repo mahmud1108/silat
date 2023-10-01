@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StorePengumumanRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StorePengumumanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,10 @@ class StorePengumumanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pengumuman_judul' => 'required',
+            'pengumuman_tanggal' => 'required',
+            'pengumuman_isi' => 'required',
+            'file' => 'mimes:png,jpg,jpeg,pdf,docx|nullable'
         ];
     }
 }

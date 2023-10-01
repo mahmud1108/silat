@@ -186,7 +186,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="pengumuman_tampil.php" class="nav-link">
+              <a href="{{ route('pengumuman.index') }}" class="nav-link">
                 <i class="nav-icon fa fa-exclamation-circle"></i>
                 <p>
                   Pengumuman
@@ -202,6 +202,7 @@
                 </p>
               </a>
             </li>
+            @if (auth()->user()->role === 'admin')
             <li class="nav-item">
               <a href="{{ route('user.index') }}" class="nav-link">
                 <i class="nav-icon fa fa-user"></i>
@@ -210,6 +211,7 @@
                 </p>
               </a>
             </li>
+            @endif
             <li class="nav-item">
               <a href="{{ route('logout-admin') }}" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>

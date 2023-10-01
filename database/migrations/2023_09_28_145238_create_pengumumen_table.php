@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('pengumuman_judul');
             $table->longText('pengumuman_isi');
-            $table->date('pengumuman_tanggal');
-            $table->date('pengumuman_update');
+            $table->dateTime('pengumuman_tanggal');
+            $table->string('file')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

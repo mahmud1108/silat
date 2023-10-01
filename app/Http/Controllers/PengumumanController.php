@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ImageFileHelper;
 use App\Models\Pengumuman;
 use App\Http\Requests\StorePengumumanRequest;
 use App\Http\Requests\UpdatePengumumanRequest;
+use App\Models\User;
 
 class PengumumanController extends Controller
 {
@@ -13,7 +15,12 @@ class PengumumanController extends Controller
      */
     public function index()
     {
-        //
+        if (auth()->user()->role === 'admin') {
+            $pengumumans = Pengumuman::all();
+        } else {
+            $pengumumans = Pengumuman::where('user_id', auth()->user()->role);
+        }
+        return view('admin-pelatih.pengumuman', compact('pengumumans'));
     }
 
     /**
@@ -29,7 +36,24 @@ class PengumumanController extends Controller
      */
     public function store(StorePengumumanRequest $request)
     {
-        //
+        if (!$request->file) {
+            $peng = new Pengumuman;
+            $peng->pengumuman_judul = $request->pengumuman_judul;
+            $peng->pengumuman_isi = $request->pengumuman_isi;
+            $peng->pengumuman_tanggal = $request->pengumuman_tanggal;
+            $peng->user_id = auth()->user()->id;
+            $peng->save();
+        } else {
+            $peng = new Pengumuman;
+            $peng->pengumuman_judul = $request->pengumuman_judul;
+            $peng->pengumuman_isi = $request->pengumuman_isi;
+            $peng->pengumuman_tanggal = $request->pengumuman_tanggal;
+            $peng->user_id = auth()->user()->id;
+            $peng->file = ImageFileHelper::instance()->upload($request->file, 'pengumuman');
+            $peng->save();
+        }
+        toast('Berhasil menambahkan data', 'success');
+        return redirect()->route('pengumuman.index');
     }
 
     /**
@@ -51,9 +75,35 @@ class PengumumanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePengumumanRequest $request, Pengumuman $pengumuman)
+    public function update(UpdatePengumumanRequest $request, $pengumuman)
     {
-        //
+        if (!$request->file) {
+            Pengumuman::where('id', $pengumuman)
+                ->update([
+                    'pengumuman_judul' => $request->pengumuman_judul,
+                    'pengumuman_isi' => $request->pengumuman_isi,
+                    'pengumuman_tanggal' => $request->pengumuman_tanggal
+                ]);
+        } else if (!$pengumuman->file) {
+            Pengumuman::where('id', $pengumuman)
+                ->update([
+                    'pengumuman_judul' => $request->pengumuman_judul,
+                    'pengumuman_isi' => $request->pengumuman_isi,
+                    'pengumuman_tanggal' => $request->pengumuman_tanggal,
+                    'file' => ImageFileHelper::instance()->upload($request->file, 'pengumuman'),
+                ]);
+        } else {
+            ImageFileHelper::instance()->delete($pengumuman->file);
+            Pengumuman::where('id', $pengumuman)
+                ->update([
+                    'pengumuman_judul' => $request->pengumuman_judul,
+                    'pengumuman_isi' => $request->pengumuman_isi,
+                    'pengumuman_tanggal' => $request->pengumuman_tanggal,
+                    'file' => ImageFileHelper::instance()->upload($request->file, 'pengumuman'),
+                ]);
+        }
+        toast('Berhasi merubah data', 'success');
+        return redirect()->route('pengumuman.index');
     }
 
     /**
@@ -61,6 +111,12 @@ class PengumumanController extends Controller
      */
     public function destroy(Pengumuman $pengumuman)
     {
-        //
+        if ($pengumuman->file) {
+            ImageFileHelper::instance()->delete($pengumuman->file);
+        }
+        $pengumuman->delete();
+
+        toast('Berhasil menghapus data', 'success');
+        return redirect()->route('pengumuman.index');
     }
 }

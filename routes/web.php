@@ -31,7 +31,7 @@ Route::view('/atlet', 'login-atlet')->name('login-atlet');
 Route::post('/admin', [AuthController::class, 'login_admin']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout-admin');
 
-route::group(['middleware' => 'auth'], function () {
+route::group(['middleware' => 'admin_pelatih'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
