@@ -40,7 +40,10 @@ route::group(['middleware' => 'admin_pelatih'], function () {
     Route::resource('jadwal', JadwalController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('pertemuan', PertemuanController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('absen', AbsenController::class)->only('index', 'store', 'update', 'destroy');
+
     Route::resource('materi', MateriController::class)->only('index', 'store', 'update', 'destroy');
+    route::post('/materi/{materi}', [MateriController::class, 'hapus_satu'])->name('hapus_satu');
+
     Route::resource('cek', CekRutinController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('pengumuman', PengumumanController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('atlet', AtletController::class)->only('index', 'store', 'update', 'destroy');

@@ -16,7 +16,7 @@ class MateriController extends Controller
     public function index()
     {
         if (auth()->user()->role === 'admin') {
-            $materis = Materi::all();
+            $materis = Materi::with('galeri')->get();
         } else {
             $materis = Materi::where('user_id', auth()->user()->id)->get();
         }
@@ -75,9 +75,17 @@ class MateriController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMateriRequest $request, Materi $materi)
+    public function update(UpdateMateriRequest $request, $materi)
     {
-        //
+        Materi::where('id', $materi)
+            ->update([
+                'materi_nama' => $request->nama,
+                'materi_status' => $request->status,
+                'materi_deskripsi' => $request->deskripsi
+            ]);
+
+        toast('Berhasil merubah data', 'success');
+        return redirect()->route('materi.index');
     }
 
     /**
@@ -93,5 +101,10 @@ class MateriController extends Controller
             }
         }
         // $materi->delete();
+    }
+
+    public function hapus_satu(Materi $materi)
+    {
+        dd($materi);
     }
 }

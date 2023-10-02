@@ -133,7 +133,7 @@
                     {{ $materi->user->user_nama }}
                   </td>
                   <td>
-                    jml
+                    {{ $materi->galeri }}
                   </td>
                   <td class="text-center py-0 align-middle">
                     <div class="btn-group btn-group-sm">
@@ -147,11 +147,10 @@
                     </div>
                   </td>
 
-                  {{-- <div class="modal fade" id="modal-lg-image{{ $materi->id }}">
+                  <div class="modal fade" id="modal-lg-image{{ $materi->id }}">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                         <form action="" method="post" enctype="multipart/form-data">
-                          <input type="hidden" name="f_id" value="{{ $materi->id }}">
                           <div class="modal-header">
                             <h4 class="modal-title">Edit Materi</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -160,19 +159,16 @@
                           </div>
                           <div class="modal-body">
                             <div class="row">
-                              <?php while ($galeri = mysqli_fetch_assoc($foto)) :
-                                ?>
                               <div class="col-md-12">
                                 <div class="form-group">
-                                  <i class="fas fa-file"></i>&nbsp<a
-                                    href="download.php?file=<?= $galeri['galeri_nama']; ?>" target="_blank()">
-                                    <?= $galeri['galeri_nama']; ?>
+                                  <i class="fas fa-file"></i>&nbsp<a href="" target="_blank()">
                                   </a>
-                                  <a style="float:right" href="materi_tampil.php?del=<?= $galeri['galeri_id']; ?>"><i
-                                      class="fas fa-trash"></i></a>
+                                  <form action="" method="post">
+                                    @csrf
+                                    <a style="float:right" type="submit"><i class="fas fa-trash"></i></a>
+                                  </form>
                                 </div>
                               </div>
-                              <?php endwhile; ?>
                               <div class="col-md-12">
                                 <div class="form-group">
                                   <label>Materi</label>
@@ -205,7 +201,7 @@
                       <!-- /.modal-content -->
                     </div>
                     <!-- /.modal-dialog -->
-                  </div> --}}
+                  </div>
 
                   <div class="modal fade" id="modal-sm{{ $materi->id }}">
                     <div class="modal-dialog modal-sm">
@@ -235,11 +231,12 @@
                     <!-- /.modal-dialog -->
                   </div>
 
-                  {{-- <div class="modal fade" id="modal-lg{{ $materi->id }}">
+                  <div class="modal fade" id="modal-lg{{ $materi->id }}">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
-                        <form action="" method="post">
-                          <input type="hidden" name="e_id" value="{{ $materi->id }}">
+                        <form action="{{ route('materi.update', ['materi'=>$materi->id]) }}" method="post">
+                          @csrf
+                          @method('put')
                           <div class="modal-header">
                             <h4 class="modal-title">Edit Materi</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -252,7 +249,7 @@
                                 <div class="form-group">
                                   <label>Nama Materi</label>
                                   <input type="text" name="nama" class="form-control" placeholder="Nama.."
-                                    value="<?= $datas['materi_nama'] ?>" required>
+                                    value="{{ $materi->materi_nama }}" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
@@ -260,10 +257,10 @@
                                   <label>Status</label>
                                   <select name="status" class="form-control select2" style="width: 100%;" required>
                                     <option value="">Pilih status</option>
-                                    <option value="Aktif" <?php if ($datas['materi_status']=="Aktif" ) { echo "selected"
-                                      ; } ?>>Aktif</option>
-                                    <option value="Tidak Aktif" <?php if ($datas['materi_status']=="Tidak Aktif" ) {
-                                      echo "selected" ; } ?>>Tidak Aktif</option>
+                                    <option value="aktif" {{ $materi->materi_status==='aktif'?'selected':'' }}>Aktif
+                                    </option>
+                                    <option value="tidak aktif" {{ $materi->materi_status==='tidak aktif'?'selected':''
+                                      }}>Tidak Aktif</option>
 
                                   </select>
                                 </div>
@@ -273,8 +270,8 @@
                               <div class="col-md-12">
                                 <div class="form-group">
                                   <label>Deskripsi</label>
-                                  <textarea class="summernote" name="deskripsi">
-                                      <?= $datas['materi_deskripsi']; ?>
+                                  <textarea class="summernote" name="deskripsi" required>
+                                      {{ $materi->materi_deskripsi }}
                                     </textarea>
                                 </div>
                               </div>
@@ -286,7 +283,6 @@
                                 <button type="button" class="btn btn-default  float-right"
                                   data-dismiss="modal">Tutup</button>
                                 <button type="submit" class="btn btn-primary">Edit</button>
-                                <button type="reset" class="btn btn-danger ">Reset</button>
                               </div>
                             </div>
                           </div>
@@ -295,7 +291,7 @@
                       <!-- /.modal-content -->
                     </div>
                     <!-- /.modal-dialog -->
-                  </div> --}}
+                  </div>
 
                 </tr>
               </tbody>
