@@ -13,6 +13,17 @@ class ImageFileHelper
     }
   }
 
+  public function multiFile($files, $path)
+  {
+    $storedFilepaths = [];
+
+    foreach ($files as $file) {
+      $storedFile = $file->store($path, 'public');
+      $storedFilepaths[] = 'storage/' . $storedFile;
+    }
+    return $storedFilepaths;
+  }
+
   public function delete($image_file)
   {
     if ($image_file) {

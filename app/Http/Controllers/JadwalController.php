@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jadwal;
 use App\Http\Requests\StoreJadwalRequest;
 use App\Http\Requests\UpdateJadwalRequest;
+use App\Models\Atlet;
 use App\Models\User;
 
 class JadwalController extends Controller
@@ -14,9 +15,10 @@ class JadwalController extends Controller
      */
     public function index()
     {
+        $atlets = Atlet::all();
         $pelatih = User::where('role', 'pelatih')->get();
         $jadwal = Jadwal::all();
-        return view('admin-pelatih.jadwal', compact('jadwal', 'pelatih'));
+        return view('admin-pelatih.jadwal', compact('jadwal', 'pelatih', 'atlets'));
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as AuthUser;
 
 class User extends AuthUser
@@ -12,8 +11,8 @@ class User extends AuthUser
 
     protected $guarded = 'id';
 
-    public function isAdmin()
+    public function pengumuman()
     {
-        $this->role = 'admin';
+        return  $this->hasMany(Pengumuman::class, 'user_id', 'id');
     }
 }

@@ -120,7 +120,7 @@
                     {{ $pengumuman->pengumuman_judul }}
                   </td>
                   <td>
-                    {{ $pengumuman->pengumuman_isi }}
+                    {{ $pengumuman->user_nama }}
                   </td>
                   <td>
                     @if (!$pengumuman->file)
@@ -170,7 +170,8 @@
                   <div class="modal fade" id="modal-lg{{ $pengumuman->id }}">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
-                        <form action="{{ route('pengumuman.update',['pengumuman'=>$pengumuman->id]) }}" method="post">
+                        <form action="{{ route('pengumuman.update',['pengumuman'=>$pengumuman->id]) }}" method="post"
+                          enctype="multipart/form-data">
                           @method('put')
                           @csrf
                           <div class="modal-header">

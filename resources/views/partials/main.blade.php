@@ -170,7 +170,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="materi_tampil.php" class="nav-link">
+              <a href="{{ route('materi.index') }}" class="nav-link">
                 <i class="nav-icon fa fa-bookmark"></i>
                 <p>
                   Materi

@@ -15,10 +15,11 @@ class PengumumanController extends Controller
      */
     public function index()
     {
+
         if (auth()->user()->role === 'admin') {
             $pengumumans = Pengumuman::all();
         } else {
-            $pengumumans = Pengumuman::where('user_id', auth()->user()->role);
+            $pengumumans = Pengumuman::where('user_id', auth()->user()->id);
         }
         return view('admin-pelatih.pengumuman', compact('pengumumans'));
     }
@@ -77,6 +78,7 @@ class PengumumanController extends Controller
      */
     public function update(UpdatePengumumanRequest $request, $pengumuman)
     {
+        $getPengumuman = Pengumuman::where('id', $pengumuman)->first();
         if (!$request->file) {
             Pengumuman::where('id', $pengumuman)
                 ->update([
@@ -84,7 +86,7 @@ class PengumumanController extends Controller
                     'pengumuman_isi' => $request->pengumuman_isi,
                     'pengumuman_tanggal' => $request->pengumuman_tanggal
                 ]);
-        } else if (!$pengumuman->file) {
+        } else if (!$getPengumuman->file) {
             Pengumuman::where('id', $pengumuman)
                 ->update([
                     'pengumuman_judul' => $request->pengumuman_judul,

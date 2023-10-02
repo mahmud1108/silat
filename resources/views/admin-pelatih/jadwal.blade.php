@@ -9,7 +9,7 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
           <li class="breadcrumb-item active">Data Jadwal</li>
         </ol>
       </div><!-- /.col -->
@@ -39,33 +39,45 @@
           <h4> Tambah Jadwal</h4>
         </div>
       </div>
-      <form action="" method="post" enctype="multipart/form-data">
+      <form action="{{ route('jadwal.store') }}" method="post" enctype="multipart/form-data">
+        @csrf
         <div class="row">
           <div class="col-md-5">
             <div class="form-group">
               <label>Nama Jadwal</label>
-              <input type="text" name="nama" class="form-control" placeholder="Nama.." required>
+              <input type="text" name="jadwal_nama" class="form-control" placeholder="Nama Jadwal.." required>
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Waktu Jadwal</label>
-              <input type="datetime-local" name="waktu" class="form-control" placeholder="Waktu.." required>
+              <input type="datetime-local" name="jadwal_waktu" class="form-control" placeholder="Waktu.." required>
             </div>
           </div>
+          @if (auth()->user()->role === 'admin')
           <div class="col-md-4">
             <div class="form-group">
               <label>Pelatih</label>
               <select name="user_id" class="form-control select2" style="width: 100%;" required>
                 <option value="">Pilih Pelatih</option>
                 @foreach ($pelatih as $p)
-                <option value="{{ $p->id }}">
+                <option value="{{ $p->id }}" {{ $p->id===auth()->user()->id?'selected':'' }}>
                   {{ $p->user_username }}
                 </option>
                 @endforeach
               </select>
             </div>
           </div>
+          @else
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Pelatih</label>
+              <select name="user_id" class="form-control select" style="width: 100%;" required readonly>
+                <option value="{{ auth()->user()->id }}">{{ auth()->user()->user_nama }}</option>
+              </select>
+            </div>
+          </div>
+          @endif
           <div class="col-md-12">
             <label>Atlet</label>
             <div class="table-responsive">
@@ -80,32 +92,29 @@
                     <th>Kelas Usia</th>
                   </tr>
                 </thead>
-                {{-- <tbody>
-                  <?php $no = 1;
-                  $atlet = mysqli_query($koneksi, "SELECT * FROM atlet a LEFT JOIN kategori ktg ON a.atlet_kategori=ktg.kategori_id LEFT JOIN kelas_usia ku ON a.atlet_kelas_usia=ku.kelas_usia_id where a.atlet_status='Aktif' order by a.atlet_id");
-                  while ($datas = mysqli_fetch_array($atlet)) { ?>
+                @foreach ($atlets as $atlet)
+                <tbody>
                   <tr>
-                    <td><input type='checkbox' class='mycheckbox' name='pilih<?= $no ?>'
-                        value="<?= $datas['atlet_id']; ?>" /></td>
-                    <td>
-                      <?= $no ?>
+                    <td><input type='checkbox' class='mycheckbox' name='pilih<?= $no ?>' value="{{ $atlet->id }}" />
                     </td>
                     <td>
-                      <?= $datas['atlet_nama_lengkap']; ?>
+                      {{ $loop->iteration }}
                     </td>
                     <td>
-                      <?= $datas['atlet_jenis_kelamin']; ?>
+                      {{ $atlet->atlet_nama_lengkap }}
                     </td>
                     <td>
-                      <?= $datas['kategori_nama']; ?>
+                      {{ $atlet->atlet_jenis_kelamin }}
                     </td>
                     <td>
-                      <?= $datas['kelas_usia_nama']; ?>
+                      {{ $atlet->kategori->kategori_nama }}
+                    </td>
+                    <td>
+                      {{ $atlet->kelas_usia->kelas_usia_nama }}
                     </td>
                   </tr>
-                  <?php $no++;
-                  } ?>
-                </tbody> --}}
+                </tbody>
+                @endforeach
               </table>
             </div>
           </div>
