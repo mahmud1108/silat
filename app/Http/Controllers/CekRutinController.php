@@ -13,7 +13,9 @@ class CekRutinController extends Controller
      */
     public function index()
     {
-        //
+        $ceks = CekRutin::all();
+
+        return view('admin-pelatih.cek', compact('ceks'));
     }
 
     /**

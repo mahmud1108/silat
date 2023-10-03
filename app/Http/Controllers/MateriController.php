@@ -16,7 +16,7 @@ class MateriController extends Controller
     public function index()
     {
         if (auth()->user()->role === 'admin') {
-            $materis = Materi::with('galeri')->get();
+            $materis = Materi::all();
         } else {
             $materis = Materi::where('user_id', auth()->user()->id)->get();
         }
@@ -36,6 +36,7 @@ class MateriController extends Controller
      */
     public function store(StoreMateriRequest $request)
     {
+        dd($request->file);
         $materi = new Materi;
         $materi->materi_nama = $request->nama;
         $materi->materi_deskripsi = $request->deskripsi;
@@ -44,8 +45,17 @@ class MateriController extends Controller
         $materi->save();
 
         $lastMateri = Materi::latest()->limit(1)->first();
-        $files = ImageFileHelper::instance()->multiFile($request->file, 'materi');
-        foreach ($files as $file) {
+
+        if (count($request->file) > 1) {
+            $files = ImageFileHelper::instance()->multiFile($request->file, 'materi');
+            foreach ($files as $file) {
+                $galeri = new Galeri;
+                $galeri->galeri_nama = $file;
+                $galeri->materi_id = $lastMateri->id;
+                $galeri->save();
+            }
+        } else {
+            $file = ImageFileHelper::instance()->upload($request->file, 'materi');
             $galeri = new Galeri;
             $galeri->galeri_nama = $file;
             $galeri->materi_id = $lastMateri->id;
@@ -100,11 +110,9 @@ class MateriController extends Controller
                 $galeri->delete();
             }
         }
-        // $materi->delete();
-    }
+        $materi->delete();
 
-    public function hapus_satu(Materi $materi)
-    {
-        dd($materi);
+        toast('Berhasil menghapus data ', 'success');
+        return redirect()->route('materi.index');
     }
 }

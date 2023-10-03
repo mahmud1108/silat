@@ -133,7 +133,7 @@
                     {{ $materi->user->user_nama }}
                   </td>
                   <td>
-                    {{ $materi->galeri }}
+                    {{ count($materi->galeri) }}
                   </td>
                   <td class="text-center py-0 align-middle">
                     <div class="btn-group btn-group-sm">
@@ -150,57 +150,59 @@
                   <div class="modal fade" id="modal-lg-image{{ $materi->id }}">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
-                        <form action="" method="post" enctype="multipart/form-data">
-                          <div class="modal-header">
-                            <h4 class="modal-title">Edit Materi</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="row">
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <i class="fas fa-file"></i>&nbsp<a href="" target="_blank()">
-                                  </a>
-                                  <form action="" method="post">
-                                    @csrf
-                                    <a style="float:right" type="submit"><i class="fas fa-trash"></i></a>
-                                  </form>
-                                </div>
+                        <div class="modal-header">
+                          <h4 class="modal-title">Edit Materi</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-md-12">
+                              @foreach ($materi->galeri as $galeri)
+                              <div class="form-group">
+                                <i class="fas fa-file"></i>&nbsp<a href="" target="_blank()">
+                                </a>
+                                <form action="{{ route('galeri.destroy',['galeri'=>$galeri->id]) }}" method="post">
+                                  @method('delete')
+                                  @csrf
+                                  <button style="float:right" type="submit">Materi {{ $loop->iteration }}<i
+                                      class="fas fa-trash"></i></button>
+                                </form>
+                                @endforeach
                               </div>
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <label>Materi</label>
-                                  <div class="input-group">
-                                    <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="exampleInputFile"
-                                        name="update_gambar[]"
+                            </div>
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label>Tambah Materi</label>
+                                <div class="input-group">
+                                  <div class="custom-file">
+                                    <form action="{{ route('galeri.store') }}" method="post"
+                                      enctype="multipart/form-data">
+                                      @csrf
+                                      <input type="file" class="custom-file-input" id="exampleInputFile" name="file[]"
                                         accept="jpg, .jpeg, .png, .gif, .docx, .doc, . pdf, .txt, .odt, .mp4, .avi, .mkv, .mov, .wmv"
                                         multiple>
+                                      <input type="hidden" name="materi_id" value="{{ $materi->id }}">
                                       <label class="custom-file-label" for="exampleInputFile">Pilih Materi</label>
-                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="card-footer">
-                            <div class="row">
-                              <div class="col-12">
-                                <button type="button" class="btn btn-default  float-right"
-                                  data-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-primary" name="edit_gambar">Edit</button>
-                                <button type="reset" class="btn btn-danger ">Reset</button>
-                              </div>
+                        </div>
+                        <div class="card-footer">
+                          <div class="row">
+                            <div class="col-12">
+                              <button type="button" class="btn btn-default  float-right"
+                                data-dismiss="modal">Tutup</button>
+                              <button type="submit" class="btn btn-primary">Tambah materi</button>
+                              </form>
                             </div>
                           </div>
-
-                        </form>
+                        </div>
                       </div>
-                      <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
                   </div>
 
                   <div class="modal fade" id="modal-sm{{ $materi->id }}">

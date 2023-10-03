@@ -178,7 +178,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="cek_rutin_tampil.php" class="nav-link">
+              <a href="{{ route('cek.index') }}" class="nav-link">
                 <i class="nav-icon fa fa-calendar"></i>
                 <p>
                   Cek Rutin
@@ -195,7 +195,7 @@
             </li>
             <li class="nav-header">DATA USER</li>
             <li class="nav-item">
-              <a href="atlet_tampil.php" class="nav-link">
+              <a href="{{ route('atlet.index') }}" class="nav-link">
                 <i class="nav-icon fa fa-user"></i>
                 <p>
                   Atlet

@@ -16,8 +16,6 @@
     </div><!-- /.row -->
   </div><!-- /.container-fluid -->
 </div>
-<!-- /.content-header -->
-
 
 @if ($errors->any())
 @foreach ($errors->all() as $error)
@@ -28,6 +26,7 @@
 </div>
 @endforeach
 @endif
+
 <!-- Main content -->
 <section class="content">
   <!-- Default box -->

@@ -5,6 +5,7 @@ use App\Http\Controllers\AtletController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CekRutinController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PengumumanController;
@@ -32,6 +33,7 @@ Route::post('/admin', [AuthController::class, 'login_admin']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout-admin');
 
 route::group(['middleware' => 'admin_pelatih'], function () {
+    // Route::get('/tes', [MateriController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
@@ -42,8 +44,8 @@ route::group(['middleware' => 'admin_pelatih'], function () {
     Route::resource('absen', AbsenController::class)->only('index', 'store', 'update', 'destroy');
 
     Route::resource('materi', MateriController::class)->only('index', 'store', 'update', 'destroy');
-    route::post('/materi/{materi}', [MateriController::class, 'hapus_satu'])->name('hapus_satu');
 
+    route::resource('galeri', GaleriController::class)->only('destroy', 'store');
     Route::resource('cek', CekRutinController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('pengumuman', PengumumanController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('atlet', AtletController::class)->only('index', 'store', 'update', 'destroy');

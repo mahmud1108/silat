@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ImageFileHelper;
 use App\Models\Galeri;
 use App\Http\Requests\StoreGaleriRequest;
 use App\Http\Requests\UpdateGaleriRequest;
@@ -29,7 +30,24 @@ class GaleriController extends Controller
      */
     public function store(StoreGaleriRequest $request)
     {
-        //
+        if (count($request->file) > 1) {
+            $files = ImageFileHelper::instance()->multiFile($request->file, 'materi');
+            foreach ($files as $file) {
+                $galeri = new Galeri;
+                $galeri->galeri_nama = $file;
+                $galeri->materi_id = $request->materi_id;
+                $galeri->save();
+            }
+        } else {
+            $file = ImageFileHelper::instance()->upload($request->file, 'materi');
+            $galeri = new Galeri;
+            $galeri->galeri_nama = $file;
+            $galeri->materi_id = $request->materi_id;
+            $galeri->save();
+        }
+
+        toast('Berhasil menambahkan materi baru', 'success');
+        return redirect()->route('materi.index');
     }
 
     /**
@@ -61,6 +79,10 @@ class GaleriController extends Controller
      */
     public function destroy(Galeri $galeri)
     {
-        //
+        ImageFileHelper::instance()->delete($galeri->galeri_nama);
+        $galeri->delete();
+
+        toast('Berhasil menghpus data', 'success');
+        return redirect()->route('materi.index');
     }
 }
