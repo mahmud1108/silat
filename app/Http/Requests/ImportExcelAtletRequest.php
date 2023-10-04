@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateAtletRequest extends FormRequest
+class ImportExcelAtletRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class UpdateAtletRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'confirmed'
+            'import_excel' => 'required|mimes:xlsx,xls'
         ];
     }
 }

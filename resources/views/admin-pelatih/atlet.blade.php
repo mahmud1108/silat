@@ -27,6 +27,49 @@
 @endforeach
 @endif
 
+<section class="content mb-5">
+  <a href="" class="btn btn-primary float-right" title="Detail Atlet" data-toggle="modal"
+    data-target="#modal-import">Import Excel</a>
+
+
+  <div class="modal fade" id="modal-import">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Import Excel</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ route('import_atlet') }}" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class="modal-body">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>File Excel</label>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="exampleInputFile" name="import_excel"
+                      accept=".xls,.xlsx" required>
+                    <label class="custom-file-label" for="exampleInputFile">Pilih File Excel</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Ya</button>
+        </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+  </div>
+</section>
+
+
 <section class="content">
   <div class="card card-secondary collapsed-card">
     <div class="card-header">
@@ -181,7 +224,7 @@
   </div>
 </section>
 
-{{-- <section class="content">
+<section class="content">
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -202,87 +245,34 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
+              @foreach ($atlets as $atlet)
               <tbody>
-                <?php $no = 1;
-                while ($datas = mysqli_fetch_array($query)) { ?>
-
                 <tr>
                   <td>
-                    <?= $no ?>
+                    {{ $loop->iteration }}
                   </td>
                   <td>
-                    <?= $datas['atlet_nama_lengkap']; ?>
+                    {{ $atlet->atlet_nama_lengkap }}
                   </td>
                   <td>
-                    <?= $datas['kategori_nama']; ?>
+                    {{ $atlet->kategori->kategori_nama }}
                   </td>
                   <td>
-                    <?= $datas['kelas_usia_nama']; ?>
+                    {{ $atlet->kelas_usia->kelas_usia_nama }}
                   </td>
                   <td>
-                    <?= $datas['atlet_jenis_kelamin']; ?>
+                    {{ $atlet->atlet_jenis_kelamin }}
                   </td>
                   <td class="text-center py-0 align-middle">
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-primary" data-toggle="modal"
-                        data-target="#modal-lg-image<?= $datas['atlet_id'] ?>"><i class="fas fa-image"></i></a>
-                      <a href="#" class="btn btn-info" data-toggle="modal"
-                        data-target="#modal-lg<?= $datas['atlet_id'] ?>"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger" data-toggle="modal"
-                        data-target="#modal-sm<?= $datas['atlet_id'] ?>"><i class="fas fa-trash"></i></a>
+                      <a href="#" class="btn btn-info" title="Detail Atlet" data-toggle="modal"
+                        data-target="#modal-lg{{ $atlet->id }}"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-danger" data-toggle="modal" title="Hapus Atlet"
+                        data-target="#modal-sm{{ $atlet->id }}"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
 
-                  <div class="modal fade" id="modal-lg-image<?= $datas['atlet_id'] ?>">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <form action="" method="post" enctype="multipart/form-data">
-                          <input type="hidden" name="f_id" value="<?= $datas['atlet_id'] ?>">
-                          <div class="modal-header">
-                            <h4 class="modal-title">Edit Foto Atlet</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="row">
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <img src="../gambar/user/atlet/<?= $datas['atlet_foto'] ?>" height="300px">
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>Gambar</label>
-                                  <div class="input-group">
-                                    <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="exampleInputFile"
-                                        name="update_gambar" accept=".jpg,.jpeg,.png" required>
-                                      <label class="custom-file-label" for="exampleInputFile">Pilih Gambar</label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card-footer">
-                            <div class="row">
-                              <div class="col-12">
-                                <button type="button" class="btn btn-default  float-right"
-                                  data-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-primary" name="edit_gambar">Edit</button>
-                                <button type="reset" class="btn btn-danger ">Reset</button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                  </div>
-
-                  <div class="modal fade" id="modal-sm<?= $datas['atlet_id'] ?>">
+                  <div class="modal fade" id="modal-sm{{ $atlet->id }}">
                     <div class="modal-dialog modal-sm">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -293,13 +283,14 @@
                         </div>
                         <div class="modal-body">
                           <p>Yakin hapus data <b>
-                              <?= $datas['atlet_nama_lengkap'] ?>
+                              {{ $atlet->atlet_nama_lengkap }}
                             </b>?</p>
                         </div>
                         <div class="modal-footer justify-content-between">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                          <form action="" method="post">
-                            <input type="hidden" name="id" value="<?= $datas['atlet_id'] ?>">
+                          <form action="{{ route('atlet.destroy', ['atlet'=>$atlet->id]) }}" method="post">
+                            @method('delete')
+                            @csrf
                             <button type="submit" class="btn btn-primary">Ya</button>
                           </form>
                         </div>
@@ -309,13 +300,12 @@
                     <!-- /.modal-dialog -->
                   </div>
 
-                  <div class="modal fade" id="modal-lg<?= $datas['atlet_id'] ?>">
+                  <div class="modal fade" id="modal-lg{{ $atlet->id }}">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
-                        <form action="" method="post">
-                          <input type="hidden" name="e_id" value="<?= $datas['atlet_id'] ?>">
-                          <input type="hidden" name="e_email" value="<?= $datas['atlet_email'] ?>">
-                          <input type="hidden" name="e_no_hp" value="<?= $datas['atlet_no_hp'] ?>">
+                        <form action="{{ route('atlet.update', ['atlet'=>$atlet->id]) }}" method="post">
+                          @method('put')
+                          @csrf
                           <div class="modal-header">
                             <h4 class="modal-title">Edit Atlet</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -328,33 +318,31 @@
                                 <div class="form-group">
                                   <label>Nama Lengkap</label>
                                   <input type="text" name="nama" class="form-control" placeholder="Nama.."
-                                    value="<?= $datas['atlet_nama_lengkap'] ?>" required>
+                                    value="{{ $atlet->atlet_nama_lengkap }}" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Tempat Lahir</label>
                                   <input type="text" name="tmpt_lahir" class="form-control" placeholder="Username.."
-                                    value="<?= $datas['atlet_tempat_lahir'] ?>" required>
+                                    value="{{ $atlet->atlet_tempat_lahir }}" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Tanggal Lahir</label>
                                   <input type="text" name="tgl_lahir" class="form-control" placeholder="Tanggal Lahir.."
-                                    value="<?= $datas['atlet_tanggal_lahir'] ?>">
+                                    value="{{ $atlet->atlet_tanggal_lahir }}">
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Jenis Kelamin</label>
                                   <select name="kelamin" class="form-control select2" style="width: 100%;" required>
-                                    <option value="">Pilih jenis kelamin</option>
-                                    <option value="L" <?php if ($datas['atlet_jenis_kelamin']=="L" ) { echo "selected" ;
-                                      } ?>>Laki-Laki</option>
-                                    <option value="P" <?php if ($datas['atlet_jenis_kelamin']=="P" ) { echo "selected" ;
-                                      } ?>>Perempuan</option>
-
+                                    <option value="L" {{ $atlet->atlet_jenis_kelamin === 'L' ? 'selected':''
+                                      }}>Laki-Laki</option>
+                                    <option value="P" {{ $atlet->atlet_jenis_kelamin === 'P' ? 'selected':''
+                                      }}>Perempuan</option>
                                   </select>
                                 </div>
                               </div>
@@ -362,51 +350,41 @@
                                 <div class="form-group">
                                   <label>Alamat</label>
                                   <input type="text" name="alamat" class="form-control" placeholder="Alamat.."
-                                    value="<?= $datas['atlet_alamat'] ?>" required>
+                                    value="{{ $atlet->atlet_alamat }}" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>No Hp</label>
                                   <input type="text" class="form-control" data-inputmask="'mask': ['089999999999', '']"
-                                    data-mask value="<?= $datas['atlet_no_hp'] ?>" name="no_hp" required>
+                                    data-mask value="{{ $atlet->no_hp }}" name="no_hp" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Kategori</label>
                                   <select name="kategori" class="form-control select2" style="width: 100%;" required>
-                                    <option value="">Pilih kategori</option>
-                                    <?php
-                                      $data_ktg = mysqli_query($koneksi, "SELECT * FROM kategori");
-                                      while ($d = mysqli_fetch_array($data_ktg)) {
-                                      ?>
-                                    <option value="<?php echo $d['kategori_id']; ?>" <?php if
-                                      ($d['kategori_id']==$datas['atlet_kategori']) { echo "selected" ; } ?>>
-                                      <?php echo $d['kategori_nama']; ?>
+                                    @foreach ($kategoris as $kategori)
+                                    <option value="{{ $kategori->id }}" {{ $atlet->kategori_id === $kategori->id ?
+                                      'selected'
+                                      :'' }}>
+                                      {{ $kategori->kategori_nama }}
                                     </option>
-                                    <?php
-                                      }
-                                      ?>
+                                    @endforeach
                                   </select>
                                 </div>
                               </div>
-                              <div class="col-md-6">
+                              <div class=" col-md-6">
                                 <div class="form-group">
                                   <label>Kelas Usia</label>
                                   <select name="kelas_usia" class="form-control select2" style="width: 100%;" required>
                                     <option value="">Pilih kelas usia</option>
-                                    <?php
-                                      $data = mysqli_query($koneksi, "SELECT * FROM kelas_usia");
-                                      while ($d = mysqli_fetch_array($data)) {
-                                      ?>
-                                    <option value="<?php echo $d['kelas_usia_id']; ?>" <?php if
-                                      ($d['kelas_usia_id']==$datas['atlet_kelas_usia']) { echo "selected" ; } ?>>
-                                      <?php echo $d['kelas_usia_nama']; ?>
+                                    @foreach ($usias as $usia)
+                                    <option value="{{ $usia->id }}" {{ $atlet->kelas_usia_id === $usia->id ? 'selected'
+                                      :'' }}>
+                                      {{ $usia->kelas_usia_nama }}
                                     </option>
-                                    <?php
-                                      }
-                                      ?>
+                                    @endforeach
                                   </select>
                                 </div>
                               </div>
@@ -414,14 +392,14 @@
                                 <div class="form-group">
                                   <label>E-Mail</label>
                                   <input type="email" name="email" class="form-control" placeholder="E-Mail.."
-                                    value="<?= $datas['atlet_email'] ?>" required>
+                                    value="{{ $atlet->atlet_email }}" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Keterangan</label>
                                   <input type="text" name="keterangan" class="form-control" placeholder="Keterangan.."
-                                    value="<?= $datas['atlet_keterangan'] ?>" required>
+                                    value="{{ $atlet->atlet_keterangan }}" required>
                                 </div>
                               </div>
                               <div class="col-md-6">
@@ -434,7 +412,7 @@
                               <div class="col-md-6">
                                 <div class="form-group">
                                   <label>Konfirmasi Password Baru</label>
-                                  <input type="password" name="konf_password" class="form-control"
+                                  <input type="password" name="password_confirmation" class="form-control"
                                     placeholder="Konfirmasi Pasword Baru.." value="">
                                 </div>
                               </div>
@@ -443,11 +421,11 @@
                                   <label>Status</label>
                                   <select name="status" class="form-control select2" style="width: 100%;" required>
                                     <option value="">Pilih status</option>
-                                    <option value="Aktif" <?php if ($datas['atlet_status']=="Aktif" ) { echo "selected"
-                                      ; } ?>>Aktif</option>
-                                    <option value="Tidak Aktif" <?php if ($datas['atlet_status']=="Tidak Aktif" ) {
-                                      echo "selected" ; } ?>>Tidak Aktif</option>
-
+                                    <option value="Aktif" {{ $atlet->atlet_status === 'Aktif' ? 'selected':'' }}>Aktif
+                                    </option>
+                                    <option value="Tidak Aktif" {{ $atlet->atlet_status === 'Tidak Aktif' ?
+                                      'selected':''
+                                      }}>Tidak Aktif</option>
                                   </select>
                                 </div>
                               </div>
@@ -464,7 +442,6 @@
                                 <button type="button" class="btn btn-default  float-right"
                                   data-dismiss="modal">Tutup</button>
                                 <button type="submit" class="btn btn-primary">Edit</button>
-                                <button type="reset" class="btn btn-danger ">Reset</button>
                               </div>
                             </div>
                           </div>
@@ -475,20 +452,8 @@
                     <!-- /.modal-dialog -->
                   </div>
                 </tr>
-
-                <?php $no++;
-                } ?>
               </tbody>
-              <tfoot>
-                <tr>
-                  <th>No</th>
-                  <th>Nama Lengkap</th>
-                  <th>Kategori</th>
-                  <th>Kelas Usia</th>
-                  <th>Jenis Kelamin</th>
-                  <th>Aksi</th>
-                </tr>
-              </tfoot>
+              @endforeach
             </table>
           </div>
         </div>
@@ -499,5 +464,5 @@
     <!-- /.col -->
   </div>
   <!-- /.row -->
-</section> --}}
+</section>
 @endsection

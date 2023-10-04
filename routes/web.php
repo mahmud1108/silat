@@ -48,6 +48,8 @@ route::group(['middleware' => 'admin_pelatih'], function () {
     route::resource('galeri', GaleriController::class)->only('destroy', 'store');
     Route::resource('cek', CekRutinController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('pengumuman', PengumumanController::class)->only('index', 'store', 'update', 'destroy');
-    Route::resource('atlet', AtletController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
+
+    Route::resource('atlet', AtletController::class)->only('index', 'store', 'update', 'destroy');
+    route::post('/import_atlet', [AtletController::class, 'import'])->name('import_atlet');
 });

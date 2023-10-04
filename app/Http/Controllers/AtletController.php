@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ImageFileHelper;
+use App\Http\Requests\ImportExcelAtletRequest;
 use App\Models\Atlet;
 use App\Http\Requests\StoreAtletRequest;
 use App\Http\Requests\UpdateAtletRequest;
+use App\Imports\AtletImport;
 use App\Models\Kategori;
 use App\Models\KelasUsia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AtletController extends Controller
 {
@@ -57,6 +60,17 @@ class AtletController extends Controller
         toast('Berhasil menambahkan data', 'success');
         return redirect()->route('atlet.index');
     }
+
+    /**
+     * Import Excel.
+     */
+    public function import(ImportExcelAtletRequest $request)
+    {
+        // dd($request->import_excel);
+        // $file = ImageFileHelper::instance()->upload($request->import_excel, 'import');
+        Excel::import(new AtletImport, $request->import_excel);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -76,9 +90,12 @@ class AtletController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAtletRequest $request, Atlet $atlet)
+    public function update(UpdateAtletRequest $request, $atlet)
     {
-        //
+        Atlet::where('id', $atlet)
+            ->update([
+                'atlet_nama_lengkap' => $request->nama,
+            ]);
     }
 
     /**
@@ -86,6 +103,11 @@ class AtletController extends Controller
      */
     public function destroy(Atlet $atlet)
     {
-        //
+        ImageFileHelper::instance()->delete($atlet->atlet_foto);
+
+        $atlet->delete();
+
+        toast('Berhasil menghapus data', 'success');
+        return redirect()->route('atlet.index');
     }
 }
