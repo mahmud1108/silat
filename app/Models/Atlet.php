@@ -20,4 +20,9 @@ class Atlet extends Model
     {
         return $this->belongsTo(Kategori::class);
     }
+
+    public function jadwal_isi()
+    {
+        return $this->hasMany(JadwalIsi::class);
+    }
 }

@@ -7,6 +7,8 @@ use App\Http\Controllers\CekRutinController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\JadwalDetailController;
+use App\Http\Controllers\JadwalIsiController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PertemuanController;
@@ -39,6 +41,7 @@ route::group(['middleware' => 'admin_pelatih'], function () {
     Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
     route::post('/user/{user}', [UserController::class, 'role'])->name('user_role');
 
+    Route::resource('jadwal_isi', JadwalIsiController::class)->only('index', 'store', 'update', 'destroy', 'show');
     Route::resource('jadwal', JadwalController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('pertemuan', PertemuanController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('absen', AbsenController::class)->only('index', 'store', 'update', 'destroy');

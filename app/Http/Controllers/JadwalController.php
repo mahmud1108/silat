@@ -6,7 +6,9 @@ use App\Models\Jadwal;
 use App\Http\Requests\StoreJadwalRequest;
 use App\Http\Requests\UpdateJadwalRequest;
 use App\Models\Atlet;
+use App\Models\JadwalIsi;
 use App\Models\User;
+use Carbon\Carbon;
 
 class JadwalController extends Controller
 {
@@ -15,10 +17,10 @@ class JadwalController extends Controller
      */
     public function index()
     {
-        $atlets = Atlet::all();
-        $pelatih = User::where('role', 'pelatih')->get();
-        $jadwal = Jadwal::all();
-        return view('admin-pelatih.jadwal', compact('jadwal', 'pelatih', 'atlets'));
+        $atlets = Atlet::where('atlet_status', 'Aktif')->get();
+        $pelatihs = User::where('role', 'pelatih')->get();
+        $jadwals = Jadwal::all();
+        return view('admin-pelatih.jadwal', compact('jadwals', 'pelatihs', 'atlets'));
     }
 
     /**
@@ -34,7 +36,28 @@ class JadwalController extends Controller
      */
     public function store(StoreJadwalRequest $request)
     {
-        //
+        // dd($request->all());
+        // $jadwal = new Jadwal;
+        // $jadwal->jadwal_nama = $request->jadwal_nama;
+        // $jadwal->jadwal_waktu = $request->jadwal_waktu;
+        // $jadwal->user_id = auth()->user()->id;
+        // $jadwal->save();
+
+        if ($request->pilih2) {
+            $users = Atlet::where('atlet_status', 'Aktif')->count();
+            $jadwal_id = Jadwal::latest()->first();
+            for ($i = 1; $i <= $users; $i++) {
+                $pro = 'pilih' . $i;
+                $user_id = $request->$pro;
+
+                $jadwalisi = new JadwalIsi;
+                $jadwalisi->jadwal_id = $jadwal_id->id;
+                $jadwalisi->atlet_id = $user_id;
+                $jadwalisi->save();
+            }
+        }
+        toast('Berhasil menambahkan data', 'success');
+        return redirect()->route('jadwal.index');
     }
 
     /**
@@ -56,9 +79,25 @@ class JadwalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
+    public function update(UpdateJadwalRequest $request, $jadwal)
     {
-        //
+        if ($request->user_id === null) {
+            Jadwal::where('id', $jadwal)
+                ->update([
+                    'jadwal_nama' => $request->nama,
+                    'jadwal_waktu' => $request->waktu,
+                ]);
+        } else {
+            Jadwal::where('id', $jadwal)
+                ->update([
+                    'jadwal_nama' => $request->nama,
+                    'jadwal_waktu' => $request->waktu,
+                    'user_id' => $request->user_id
+                ]);
+        }
+
+        toast('Berhasil merubah data', 'success');
+        return redirect()->route('jadwal.index');
     }
 
     /**
@@ -66,6 +105,9 @@ class JadwalController extends Controller
      */
     public function destroy(Jadwal $jadwal)
     {
-        //
+        $jadwal->delete();
+
+        toast('Berhasil menghapus jadwal', 'success');
+        return redirect()->route('jadwal.index');
     }
 }

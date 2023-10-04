@@ -60,9 +60,9 @@
               <label>Pelatih</label>
               <select name="user_id" class="form-control select2" style="width: 100%;" required>
                 <option value="">Pilih Pelatih</option>
-                @foreach ($pelatih as $p)
-                <option value="{{ $p->id }}" {{ $p->id===auth()->user()->id?'selected':'' }}>
-                  {{ $p->user_username }}
+                @foreach ($pelatihs as $pelatih)
+                <option value="{{ $pelatih->id }}" {{ $pelatih->id===auth()->user()->id?'selected':'' }}>
+                  {{ $pelatih->user_username }}
                 </option>
                 @endforeach
               </select>
@@ -95,7 +95,8 @@
                 @foreach ($atlets as $atlet)
                 <tbody>
                   <tr>
-                    <td><input type='checkbox' class='mycheckbox' name='pilih<?= $no ?>' value="{{ $atlet->id }}" />
+                    <td><input type='checkbox' class='mycheckbox' name='pilih{{ $loop->iteration }}'
+                        value="{{ $atlet->id }}" />
                     </td>
                     <td>
                       {{ $loop->iteration }}
@@ -133,7 +134,7 @@
 <!-- /.content -->
 
 <!-- Main content -->
-{{-- <section class="content">
+<section class="content">
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -155,51 +156,56 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
+              @foreach ($jadwals as $jadwal)
               <tbody>
-                <?php $no = 1;
-                while ($datas = mysqli_fetch_array($query)) {
-                  $j_ptm = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM pertemuan WHERE pertemuan_jadwal='$datas[jadwal_id]'"));
-                  $j_atlet = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM jadwal_isi WHERE jadwal='$datas[jadwal_id]'"));
-                ?>
                 <tr>
                   <td>
-                    <?= $no ?>
+                    {{ $loop->iteration }}
                   </td>
                   <td>
-                    <?= $datas['jadwal_nama']; ?>
+                    {{ $jadwal->jadwal_nama }}
                   </td>
                   <td>
-                    <?= tgl_indo(substr($datas['jadwal_waktu'], 0, 10)) . " " . substr($datas['jadwal_waktu'], 11, 20); ?>
+                    @php
+                    $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $jadwal->jadwal_waktu);
+                    $bulan = $date->format('d F Y');
+                    $jam = $date->format('H:i');
+                    @endphp
+                    {{ $bulan. ' pukul '.$jam }}
                   </td>
                   <td>
-                    <?= $datas['user_nama']; ?>
+                    {{ $jadwal->user->user_nama }}
                   </td>
                   <td>
-                    <?= $j_ptm; ?> kali &nbsp;
-                    <div class="btn-group btn-group-sm">
-                      <a href="pertemuan_tambah.php?id_jadwal=<?= $datas['jadwal_id'] ?>" class="btn btn-primary"><i
-                          class="fas fa-plus"></i></a>
-                      <a href="pertemuan_tampil.php?id_jadwal=<?= $datas['jadwal_id'] ?>" class="btn btn-info"><i
-                          class="fas fa-eye"></i></a>
+                    {{ count($jadwal->pertemuan) }}
+                    <div class="btn-group btn-group-sm float-right">
+                      <a href="pertemuan_tambah.php?id_jadwal={{ $jadwal->id }}" title="Tambah Pertemuan"
+                        class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                      @if (count($jadwal->pertemuan)>0)
+                      <a href="pertemuan_tampil.php?id_jadwal={{ $jadwal->id }}" title="Detail Pertemuan"
+                        class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      @endif
                     </div>
                   </td>
                   <td class="text-center py-0 align-middle">
-                    <?= $j_atlet; ?> orang &nbsp;
-                    <div class="btn-group btn-group-sm">
-                      <a href="jadwal_atlet_update.php?jadwal=<?= $datas['jadwal_id'] ?>" class="btn btn-info"><i
-                          class="fas fa-eye"></i></a>
+                    {{ count($jadwal->jadwal_isi) }}
+                    @if (count($jadwal->jadwal_isi) > 0)
+                    <div class="btn-group btn-group-sm float-right">
+                      <a href="{{ route('jadwal_isi.show', ['jadwal_isi'=> $jadwal->id]) }}" title="Detail peserta"
+                        class="btn btn-info"><i class="fas fa-eye"></i></a>
                     </div>
+                    @endif
                   </td>
                   <td class="text-center py-0 align-middle">
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info" data-toggle="modal"
-                        data-target="#modal-lg<?= $datas['jadwal_id'] ?>"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger" data-toggle="modal"
-                        data-target="#modal-sm<?= $datas['jadwal_id'] ?>"><i class="fas fa-trash"></i></a>
+                      <a href="#" class="btn btn-info" data-toggle="modal" title="Ubah jadwal"
+                        data-target="#modal-lg{{ $jadwal->id }}"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-danger" title="Hapus jadwal" data-toggle="modal"
+                        data-target="#modal-sm{{ $jadwal->id }}"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
 
-                  <div class="modal fade" id="modal-sm<?= $datas['jadwal_id'] ?>">
+                  <div class="modal fade" id="modal-sm{{ $jadwal->id }}">
                     <div class="modal-dialog modal-sm">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -210,13 +216,14 @@
                         </div>
                         <div class="modal-body">
                           <p>Yakin hapus jadwal <b>
-                              <?= $datas['jadwal_nama'] ?>
+                              {{ $jadwal->jadwal_nama }}
                             </b>?</p>
                         </div>
                         <div class="modal-footer justify-content-between">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                          <form action="" method="post">
-                            <input type="hidden" name="id" value="<?= $datas['jadwal_id'] ?>">
+                          <form action="{{ route('jadwal.destroy', ['jadwal'=>$jadwal->id]) }}" method="post">
+                            @method('delete')
+                            @csrf
                             <button type="submit" class="btn btn-primary">Ya</button>
                           </form>
                         </div>
@@ -226,11 +233,12 @@
                     <!-- /.modal-dialog -->
                   </div>
 
-                  <div class="modal fade" id="modal-lg<?= $datas['jadwal_id'] ?>">
+                  <div class="modal fade" id="modal-lg{{ $jadwal->id }}">
                     <div class="modal-dialog modal-sm">
                       <div class="modal-content">
-                        <form action="" method="post">
-                          <input type="hidden" name="e_id" value="<?= $datas['jadwal_id'] ?>">
+                        <form action="{{ route('jadwal.update',['jadwal'=>$jadwal->id]) }}" method="post">
+                          @method('put')
+                          @csrf
                           <div class="modal-header">
                             <h4 class="modal-title">Edit jadwal</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -243,32 +251,27 @@
                                 <div class="form-group">
                                   <label>Nama jadwal</label>
                                   <input type="text" name="nama" class="form-control" placeholder="Nama jadwal.."
-                                    value="<?= $datas['jadwal_nama'] ?>" required>
+                                    value="{{ $jadwal->jadwal_nama }}" required>
                                 </div>
                               </div>
                               <div class="col-md-12">
                                 <div class="form-group">
                                   <label>Waktu jadwal</label>
                                   <input type="datetime-local" name="waktu" class="form-control"
-                                    placeholder="Waktu jadwal.." value="<?= $datas['jadwal_waktu'] ?>" required>
+                                    placeholder="Waktu jadwal.." value="{{ $jadwal->jadwal_waktu }}" required>
                                 </div>
                               </div>
                               <div class="col-md-12">
                                 <div class="form-group">
                                   <label>Pelatih</label>
-                                  <select name="user_id" class="form-control select2" style="width: 100%;" required>
+                                  <select name="user_id" class="form-control select2" style="width: 100%;">
                                     <option value="">Pilih Pelatih</option>
-                                    <?php
-                                      $data_usere = mysqli_query($koneksi, "SELECT * FROM user u where u.user_level=2");
-                                      while ($ddata_usere = mysqli_fetch_array($data_usere)) {
-
-                                        echo "<option value='$ddata_usere[user_id]'";
-                                        if ($ddata_usere['user_id'] == $datas['user_id']) {
-                                          echo "selected";
-                                        }
-                                        echo ">$ddata_usere[user_nama]</option>";
-                                      }
-                                      ?>
+                                    @foreach ($pelatihs as $pelatih)
+                                    <option value="{{ $pelatih->id }}" {{ $jadwal->user_id===$pelatih->id ?
+                                      'selected':'' }}>
+                                      {{ $pelatih->user_nama }}
+                                    </option>
+                                    @endforeach
                                   </select>
                                 </div>
                               </div>
@@ -280,7 +283,6 @@
                                 <button type="button" class="btn btn-default  float-right"
                                   data-dismiss="modal">Tutup</button>
                                 <button type="submit" class="btn btn-primary">Edit</button>
-                                <button type="reset" class="btn btn-danger ">Reset</button>
                               </div>
                             </div>
                           </div>
@@ -289,9 +291,8 @@
                     </div>
                   </div>
                 </tr>
-                <?php $no++;
-                } ?>
               </tbody>
+              @endforeach
             </table>
           </div>
         </div>
@@ -302,5 +303,46 @@
     <!-- /.col -->
   </div>
   <!-- /.row -->
-</section> --}}
+</section>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+  document.getElementById("saves").style.display = "none";
+  const checkboxes = document.querySelectorAll(".mycheckbox");
+
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener("change", function() {
+      const isChecked = Array.from(checkboxes).some(function(cb) {
+        return cb.checked;
+      });
+
+      if (isChecked) {
+        document.getElementById("saves").style.display = "inline-block";
+      } else {
+        document.getElementById("saves").style.display = "none";
+      }
+    });
+  });
+
+
+  function checkAll(ele) {
+    var checkboxes = document.getElementsByTagName('input');
+    if (ele.checked) {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox' && !(checkboxes[i].disabled)) {
+          checkboxes[i].checked = true;
+          document.getElementById("saves").style.display = "inline-block";
+        }
+      }
+    } else {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox') {
+          document.getElementById("saves").style.display = "none";
+          checkboxes[i].checked = false;
+        }
+      }
+    }
+  }
+</script>
 @endsection
