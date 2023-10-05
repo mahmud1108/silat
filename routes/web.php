@@ -13,6 +13,7 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\UserController;
+use App\Models\PertemuanMateri;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,12 +44,18 @@ route::group(['middleware' => 'admin_pelatih'], function () {
 
     Route::resource('jadwal_isi', JadwalIsiController::class)->only('index', 'store', 'update', 'destroy', 'show');
     Route::resource('jadwal', JadwalController::class)->only('index', 'store', 'update', 'destroy');
-    Route::resource('pertemuan', PertemuanController::class)->only('index', 'store', 'update', 'destroy');
-    Route::resource('absen', AbsenController::class)->only('index', 'store', 'update', 'destroy');
 
+    Route::resource('pertemuan', PertemuanController::class)->only('index', 'store', 'update', 'destroy');
+    route::get('/pertemuan/detail/{pertemuan}', [PertemuanController::class, 'pertemuan_detail'])->name('pertemuan_detail');
+    route::get('/pertemuan/{pertemuan}', [PertemuanController::class, 'create'])->name('pertemuan_create');
+    route::get('/pertemuan_materi/delete/{pertemuan_materi}', [PertemuanController::class, 'del_pertemuan_materi'])->name('pertemuan_materi');
+
+    Route::resource('absen', AbsenController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('materi', MateriController::class)->only('index', 'store', 'update', 'destroy');
 
     route::resource('galeri', GaleriController::class)->only('destroy', 'store');
+    route::get('/galeri/download/{filename}', [GaleriController::class, 'download'])->name('download_materi');
+
     Route::resource('cek', CekRutinController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('pengumuman', PengumumanController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');

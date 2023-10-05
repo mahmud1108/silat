@@ -179,7 +179,7 @@
                   <td>
                     {{ count($jadwal->pertemuan) }}
                     <div class="btn-group btn-group-sm float-right">
-                      <a href="pertemuan_tambah.php?id_jadwal={{ $jadwal->id }}" title="Tambah Pertemuan"
+                      <a href="{{route('pertemuan_create', ['pertemuan'=> $jadwal->id]) }}" title="Tambah Pertemuan"
                         class="btn btn-primary"><i class="fas fa-plus"></i></a>
                       @if (count($jadwal->pertemuan)>0)
                       <a href="pertemuan_tampil.php?id_jadwal={{ $jadwal->id }}" title="Detail Pertemuan"

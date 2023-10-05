@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('pertemuan_nama');
             $table->string('pertemuan_deskripsi');
-            $table->date('pertemuan_mulai');
-            $table->date('pertemuan_selesai');
+            $table->dateTime('pertemuan_mulai');
+            $table->dateTime('pertemuan_selesai');
             $table->foreignId('jadwal_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

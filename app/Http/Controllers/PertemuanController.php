@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Pertemuan;
 use App\Http\Requests\StorePertemuanRequest;
 use App\Http\Requests\UpdatePertemuanRequest;
+use App\Models\Jadwal;
+use App\Models\Materi;
+use App\Models\PertemuanMateri;
 
 class PertemuanController extends Controller
 {
@@ -13,15 +16,31 @@ class PertemuanController extends Controller
      */
     public function index()
     {
-        //
+        if (auth()->user()->role === 'admin') {
+            $pertemuans = Pertemuan::all();
+        } else {
+            $pertemuans = Jadwal::where('user_id', auth()->user()->id)->get();
+        }
+
+        return view('admin-pelatih.pertemuan', compact('pertemuans'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Membuat pertemuan melalui Jadwal page.
      */
-    public function create()
+    public function create($pertemuan)
     {
-        //
+        $jadwal = Jadwal::where('id', $pertemuan)->first();
+        $materis = Materi::all();
+        return view('admin-pelatih.pertemuan_tambah', compact('jadwal', 'materis'));
+    }
+
+    /**
+     * Membuat pertemuan melalui Jadwal page.
+     */
+    public function pertemuan_detail(Pertemuan $pertemuan)
+    {
+        return view('admin-pelatih.pertemuan_detail', compact('pertemuan'));
     }
 
     /**
@@ -29,7 +48,34 @@ class PertemuanController extends Controller
      */
     public function store(StorePertemuanRequest $request)
     {
-        //
+        $pertemuan = new Pertemuan;
+        $pertemuan->pertemuan_nama = $request->nama_pertemuan;
+        $pertemuan->pertemuan_deskripsi = $request->deskripsi;
+        $pertemuan->pertemuan_mulai = $request->mulai;
+        $pertemuan->pertemuan_selesai = $request->selesai;
+        $pertemuan->jadwal_id = $request->jadwal_id;
+        $pertemuan->save();
+
+        $getLastPertemuan = Pertemuan::latest()->first();
+
+        if ($request->pilih2) {
+            $materis = Materi::where('materi_status', 'aktif')->count();
+            for ($i = 1; $i <= $materis; $i++) {
+                $pilih = 'pilih' . $i;
+                $pertemuan_materi = new PertemuanMateri;
+                $pertemuan_materi->pertemuan_id = $getLastPertemuan->id;
+                $pertemuan_materi->materi_id = $request->$pilih;
+                $pertemuan_materi->save();
+            }
+        } else {
+            $pertemuan_materi = new PertemuanMateri;
+            $pertemuan_materi->pertemuan_id = $getLastPertemuan->id;
+            $pertemuan_materi->materi_id = $request->pilih1;
+            $pertemuan_materi->save();
+        }
+
+        toast('Berhasil mengambahkan data', 'success');
+        return redirect()->route('jadwal.index');
     }
 
     /**
@@ -61,6 +107,20 @@ class PertemuanController extends Controller
      */
     public function destroy(Pertemuan $pertemuan)
     {
-        //
+        $pertemuan->delete();
+
+        toast('Berhasil menghapus data', 'success');
+        return redirect()->route('pertemuan.index');
+    }
+
+    /**
+     * Delete prtemuan materi dari pertemuan
+     */
+    public function del_pertemuan_materi(PertemuanMateri $pertemuan_materi)
+    {
+        $pertemuan_materi->delete();
+
+        toast("Berhasil menghapus data", 'success');
+        return redirect()->back();
     }
 }

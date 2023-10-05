@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PertemuanMateri extends Model
 {
     use HasFactory;
+
+    public function materi()
+    {
+        return $this->belongsTo(Materi::class);
+    }
 }

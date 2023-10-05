@@ -6,15 +6,24 @@ use App\Helpers\ImageFileHelper;
 use App\Models\Galeri;
 use App\Http\Requests\StoreGaleriRequest;
 use App\Http\Requests\UpdateGaleriRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Exists;
 
 class GaleriController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Download file materi.
      */
-    public function index()
+    public function download($filename)
     {
-        //
+        $disk = 'storage/materi/' . $filename;
+
+        if (file_exists($disk)) {
+            $path = 'storage/materi/';
+            return response()->download($disk);
+        }
+
+        abort(404, 'File not found');
     }
 
     /**
