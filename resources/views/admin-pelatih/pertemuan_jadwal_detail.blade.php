@@ -7,14 +7,14 @@
     <div class="row mb-2">
       <div class="col-sm-6">
         <h1 class="m-0">
-          Daftar Pertemuan
+          Daftar Pertemuan di Jadwal {{ $jadwal->jadwal_nama }}
         </h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
           <li class="breadcrumb-item active">
-            Daftar Pertemuan
+            Daftar Pertemuan di Jadwal {{ $jadwal->jadwal_nama }}
           </li>
         </ol>
       </div><!-- /.col -->

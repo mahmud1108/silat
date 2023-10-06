@@ -34,7 +34,7 @@
           <div class="icon">
             <i class="fa fa-rss-square"></i>
           </div>
-          <a href="jadwal_tampil.php" class="small-box-footer">Selengkapnya <i
+          <a href="{{ route('jadwal.index') }}" class="small-box-footer">Selengkapnya <i
               class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
@@ -52,7 +52,7 @@
           <div class="icon">
             <i class="fa fa-graduation-cap"></i>
           </div>
-          <a href="pertemuan_tampil.php" class="small-box-footer">Selengkapnya <i
+          <a href="{{ route('pertemuan.index') }}" class="small-box-footer">Selengkapnya <i
               class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
@@ -70,7 +70,8 @@
           <div class="icon">
             <i class="ion ion-person-add"></i>
           </div>
-          <a href="user_tampil.php" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{{ route('user.index') }}" class="small-box-footer">Selengkapnya <i
+              class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
     </div>

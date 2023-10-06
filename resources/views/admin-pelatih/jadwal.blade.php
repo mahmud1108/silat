@@ -182,7 +182,7 @@
                       <a href="{{route('pertemuan_create', ['pertemuan'=> $jadwal->id]) }}" title="Tambah Pertemuan"
                         class="btn btn-primary"><i class="fas fa-plus"></i></a>
                       @if (count($jadwal->pertemuan)>0)
-                      <a href="pertemuan_tampil.php?id_jadwal={{ $jadwal->id }}" title="Detail Pertemuan"
+                      <a href="{{ route('pertemuan.show', ['pertemuan'=>$jadwal->id]) }}" title="Detail Pertemuan"
                         class="btn btn-info"><i class="fas fa-eye"></i></a>
                       @endif
                     </div>

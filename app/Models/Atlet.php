@@ -25,4 +25,9 @@ class Atlet extends Model
     {
         return $this->hasMany(JadwalIsi::class);
     }
+
+    public function absen()
+    {
+        return $this->hasMany(Absen::class);
+    }
 }

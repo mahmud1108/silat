@@ -117,8 +117,8 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
-              @foreach ($materis as $materi)
               <tbody>
+                @foreach ($materis as $materi)
                 <tr>
                   <td>
                     {{ $loop->iteration }}
@@ -146,6 +146,95 @@
                         title="Hapus Materi"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
+
+                  <div class="modal fade" id="modal-lg{{ $materi->id }}">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <form action="{{ route('materi.update', ['materi'=>$materi->id]) }}" method="post">
+                          @csrf
+                          @method('put')
+                          <div class="modal-header">
+                            <h4 class="modal-title">Edit Materi</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Nama Materi</label>
+                                  <input type="text" name="nama" class="form-control" placeholder="Nama.."
+                                    value="{{ $materi->materi_nama }}" required>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Status</label>
+                                  <select name="status" class="form-control select2" style="width: 100%;" required>
+                                    <option value="">Pilih status</option>
+                                    <option value="aktif" {{ $materi->materi_status==='aktif'?'selected':''
+                                      }}>Aktif
+                                    </option>
+                                    <option value="tidak aktif" {{ $materi->materi_status==='tidak
+                                      aktif'?'selected':''
+                                      }}>Tidak Aktif</option>
+
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <label>Deskripsi</label>
+                                  <textarea class="summernote" name="deskripsi" required>
+                                      {{ $materi->materi_deskripsi }}
+                                    </textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-footer">
+                            <div class="row">
+                              <div class="col-12">
+                                <button type="button" class="btn btn-default  float-right"
+                                  data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal fade" id="modal-sm{{ $materi->id }}">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Hapus</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Yakin hapus data <b>
+                              {{ $materi->materi_nama }}
+                            </b>?</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                          <form action="{{ route('materi.destroy', ['materi'=>$materi->id]) }}" method="post">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Ya</button>
+                          </form>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                  </div>
 
                   <div class="modal fade" id="modal-lg-image{{ $materi->id }}">
                     <div class="modal-dialog modal-lg">
@@ -196,8 +285,7 @@
                             <div class="col-12">
                               <button type="button" class="btn btn-default  float-right"
                                 data-dismiss="modal">Tutup</button>
-                              <button type="submit" class="btn btn-primary">Tambah materi</button>
-                              </form>
+                              <button type="submit" class="btn btn-primary">Edit</button>
                             </div>
                           </div>
                         </div>
@@ -205,108 +293,16 @@
                     </div>
                   </div>
 
-                  <div class="modal fade" id="modal-sm{{ $materi->id }}">
-                    <div class="modal-dialog modal-sm">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h4 class="modal-title">Hapus</h4>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <p>Yakin hapus data <b>
-                              {{ $materi->materi_nama }}
-                            </b>?</p>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                          <form action="{{ route('materi.destroy', ['materi'=>$materi->id]) }}" method="post">
-                            @method('delete')
-                            @csrf
-                            <button type="submit" class="btn btn-primary">Ya</button>
-                          </form>
-                        </div>
-                      </div>
-                      <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                  </div>
 
-                  <div class="modal fade" id="modal-lg{{ $materi->id }}">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <form action="{{ route('materi.update', ['materi'=>$materi->id]) }}" method="post">
-                          @csrf
-                          @method('put')
-                          <div class="modal-header">
-                            <h4 class="modal-title">Edit Materi</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="row">
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>Nama Materi</label>
-                                  <input type="text" name="nama" class="form-control" placeholder="Nama.."
-                                    value="{{ $materi->materi_nama }}" required>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>Status</label>
-                                  <select name="status" class="form-control select2" style="width: 100%;" required>
-                                    <option value="">Pilih status</option>
-                                    <option value="aktif" {{ $materi->materi_status==='aktif'?'selected':'' }}>Aktif
-                                    </option>
-                                    <option value="tidak aktif" {{ $materi->materi_status==='tidak aktif'?'selected':''
-                                      }}>Tidak Aktif</option>
-
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <label>Deskripsi</label>
-                                  <textarea class="summernote" name="deskripsi" required>
-                                      {{ $materi->materi_deskripsi }}
-                                    </textarea>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card-footer">
-                            <div class="row">
-                              <div class="col-12">
-                                <button type="button" class="btn btn-default  float-right"
-                                  data-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                  </div>
 
                 </tr>
+                @endforeach
               </tbody>
-              @endforeach
             </table>
           </div>
         </div>
-        <!-- /.card-body -->
       </div>
-      <!-- /.card -->
     </div>
-    <!-- /.col -->
   </div>
-  <!-- /.row -->
 </section>
 @endsection

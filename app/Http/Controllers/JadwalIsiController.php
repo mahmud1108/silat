@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JadwalIsi;
 use App\Http\Requests\StoreJadwalIsiRequest;
 use App\Http\Requests\UpdateJadwalIsiRequest;
+use App\Models\Absen;
 use App\Models\Atlet;
 use App\Models\Jadwal;
 
@@ -70,6 +71,12 @@ class JadwalIsiController extends Controller
                     $jadwal_isi2->jadwal_id = $jadwalIsi;
                     $jadwal_isi2->atlet_id = $request->$pilih;
                     $jadwal_isi2->save();
+
+                    $absen = new Absen;
+                    $absen->absen_waktu = null;
+                    $absen->atlet_id =  $request->$pilih;
+                    $absen->pertemuan_id = ;
+                    $absen->save();
                 }
             } else {
                 JadwalIsi::where('atlet_id', $request->$atlet)->where('jadwal_id', $jadwalIsi)->delete();

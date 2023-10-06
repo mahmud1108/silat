@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pertemuan;
 use App\Http\Requests\StorePertemuanRequest;
 use App\Http\Requests\UpdatePertemuanRequest;
+use App\Models\Atlet;
 use App\Models\Jadwal;
 use App\Models\Materi;
 use App\Models\PertemuanMateri;
@@ -40,7 +41,8 @@ class PertemuanController extends Controller
      */
     public function pertemuan_detail(Pertemuan $pertemuan)
     {
-        return view('admin-pelatih.pertemuan_detail', compact('pertemuan'));
+        $atlets = Atlet::where('atlet_status', 'Aktif')->with('absen')->get();
+        return view('admin-pelatih.pertemuan_detail', compact('pertemuan', 'atlets'));
     }
 
     /**
@@ -81,9 +83,12 @@ class PertemuanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pertemuan $pertemuan)
+    public function show($pertemuan)
     {
-        //
+        $pertemuans = Pertemuan::where('jadwal_id', $pertemuan)->get();
+        $jadwal = Jadwal::where('id', $pertemuan)->first();
+
+        return view('admin-pelatih.pertemuan_jadwal_detail', compact('pertemuans', 'jadwal'));
     }
 
     /**

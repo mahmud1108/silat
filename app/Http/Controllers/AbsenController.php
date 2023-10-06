@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Absen;
 use App\Http\Requests\StoreAbsenRequest;
 use App\Http\Requests\UpdateAbsenRequest;
+use App\Models\Atlet;
+use App\Models\Jadwal;
+use App\Models\Pertemuan;
 
 class AbsenController extends Controller
 {
@@ -13,7 +16,13 @@ class AbsenController extends Controller
      */
     public function index()
     {
-        //
+        if (auth()->user()->role === 'admin') {
+            $pertemuans = Pertemuan::all();
+        } else {
+            $pertemuans = Jadwal::where('user_id', auth()->user()->id)->get();
+        }
+
+        return view('admin-pelatih.absen', compact('pertemuans'));
     }
 
     /**
@@ -35,9 +44,13 @@ class AbsenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Absen $absen)
+    public function show($absen)
     {
-        //
+        $pertemuan = Pertemuan::where('id', $absen)->first();
+        $pertemuans = Pertemuan::where('id', $absen)->get();
+        $absens = Absen::where('pertemuan_id', $absen)->get();
+
+        return view('admin-pelatih.absen_detail', compact('pertemuan', 'pertemuans', 'absens'));
     }
 
     /**
@@ -59,8 +72,11 @@ class AbsenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Absen $absen)
+    public function destroy($absen)
     {
-        //
+        Pertemuan::where('id', $absen)->delete();
+
+        toast('Berhasil menghapus data', 'success');
+        return redirect()->route('absen.index');
     }
 }
