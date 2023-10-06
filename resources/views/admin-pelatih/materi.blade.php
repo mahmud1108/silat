@@ -286,15 +286,13 @@
                               <button type="button" class="btn btn-default  float-right"
                                 data-dismiss="modal">Tutup</button>
                               <button type="submit" class="btn btn-primary">Edit</button>
+                              </form>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-
-
                 </tr>
                 @endforeach
               </tbody>

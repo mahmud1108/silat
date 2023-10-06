@@ -76,9 +76,18 @@
                   <td>
                     {{ count($pertemuan->pertemuan_materi) }}
                   </td>
+                  @php
+                  $a = App\Models\Absen::where('pertemuan_id', $pertemuan->id)->count();
+                  $ab = App\Models\Absen::where('pertemuan_id', $pertemuan->id)->whereNotNull('absen_waktu')->count();
+                  if ($a > 0 and $ab > 0) {
+                  $persen = $ab / $a * 100;
+                  $persen = intval($persen);
+                  } else {
+                  $persen = intval(0);
+                  }
+                  @endphp
                   <td><b>
-                      {{--
-                      <?= $persen; ?>% --}}
+                      {{ $persen }}%
                     </b></td>
 
                   <td class="text-center py-0 align-middle">

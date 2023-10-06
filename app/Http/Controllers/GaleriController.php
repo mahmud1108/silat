@@ -48,7 +48,7 @@ class GaleriController extends Controller
                 $galeri->save();
             }
         } else {
-            $file = ImageFileHelper::instance()->upload($request->file, 'materi');
+            $file = ImageFileHelper::instance()->upload($request->file[0], 'materi');
             $galeri = new Galeri;
             $galeri->galeri_nama = $file;
             $galeri->materi_id = $request->materi_id;

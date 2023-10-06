@@ -36,7 +36,7 @@ class MateriController extends Controller
      */
     public function store(StoreMateriRequest $request)
     {
-        dd($request->file);
+        // dd($request->all());
         $materi = new Materi;
         $materi->materi_nama = $request->nama;
         $materi->materi_deskripsi = $request->deskripsi;
@@ -55,7 +55,7 @@ class MateriController extends Controller
                 $galeri->save();
             }
         } else {
-            $file = ImageFileHelper::instance()->upload($request->file, 'materi');
+            $file = ImageFileHelper::instance()->upload($request->file[0], 'materi');
             $galeri = new Galeri;
             $galeri->galeri_nama = $file;
             $galeri->materi_id = $lastMateri->id;

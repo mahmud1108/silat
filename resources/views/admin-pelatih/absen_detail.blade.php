@@ -1,4 +1,3 @@
-@dd($datas)
 @extends('partials.main')
 
 @section('content')
@@ -33,6 +32,8 @@
         <!-- /.card-header -->
         <form action="{{ route('absen.store') }}" method="post">
           @csrf
+          <input type="hidden" name="pertemuan_id"
+            value="{{ $datas[0]['jadwal_isi'][0]['atlet'][0]['absen'][0]['pertemuan_id'] }}">
           <div class="card-body">
             <div class="table-responsive">
               <table id="example1" class="table table-bordered table-striped">
@@ -45,22 +46,23 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($jadwal_isis as $jadwal_isi)
-                  @foreach($jadwal_isi->atlet->absen as $absen)
-                  <tr>
-                    <td><input type='checkbox' class='mycheckbox' name='pilih{{ $loop->iteration }}'
-                        value="{{ $absen->id }}" {{ $absen->absen_waktu === null ?
-                      '' : 'checked' }}/></td>
-                    <td>
-                      {{ $loop->iteration }}
+                  @for ($i = 0; $i < count($datas[0]['jadwal_isi']); $i++) <tr>
+
+                    <td><input type='checkbox' class='mycheckbox' name='pilih{{ $i }}'
+                        value="{{ $datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['id'] }}" {{
+                        $datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['absen_waktu']===null ? '' : 'checked' }} />
                     </td>
                     <td>
-                      {{ $jadwal_isi->atlet->atlet_nama_lengkap }}
+                      {{ $i+1 }}
                     </td>
                     <td>
-                      @if ($absen->absen_waktu!==null)
+                      {{ $datas[0]['jadwal_isi'][$i]['atlet'][0]['atlet_nama_lengkap'] }}
+                    </td>
+                    <td>
+                      @if ($datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['absen_waktu']!==null)
                       @php
-                      $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $absen->absen_waktu);
+                      $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',
+                      $datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['absen_waktu']);
                       $bulan = $date->format('d F Y');
                       $jam = $date->format('H:i');
                       @endphp
@@ -68,9 +70,8 @@
                       @else
                       -
                       @endif
-                  </tr>
-                  @endforeach
-                  @endforeach
+                      </tr>
+                      @endfor
 
                 </tbody>
               </table>

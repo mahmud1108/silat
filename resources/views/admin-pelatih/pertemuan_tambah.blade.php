@@ -32,6 +32,7 @@
         <div class="card-body">
           <form action="{{ route('pertemuan.store') }}" method="post">
             @csrf
+            <input type="hidden" name="jadwal_id" value="{{ $jadwal->id }}">
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-6">
@@ -177,87 +178,6 @@
   </div>
 </section>
 
-{{-- <div class="modal fade" id="tambah-materi">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form action="" method="post" enctype="multipart/form-data">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Materi</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <h4> Tambah Materi</h4>
-            </div>
-          </div>
-          <form action="" method="post" enctype="multipart/form-data">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Nama</label>
-                  <input type="text" name="nama" class="form-control" placeholder="Nama.." required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Materi</label>
-                  <div class="input-group">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="exampleInputFile" name="upload[]"
-                        accept="jpg, .jpeg, .png, .gif, .docx, .doc, . pdf, .txt, .odt, .mp4, .avi, .mkv, .mov, .wmv"
-                        multiple>
-                      <label class="custom-file-label" for="exampleInputFile">Pilih Materi</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Deskripsi</label>
-                  <textarea class="summernote" name="deskripsi">
-        </textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Status</label>
-                  <div class="input-group">
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" name="status" id="radioPrimary1" checked value="Aktif">
-                      <label for="radioPrimary1">Aktif</label>
-                    </div>&nbsp&nbsp&nbsp&nbsp
-                    <div class="icheck-danger d-inline">
-                      <input type="radio" name="status" id="radioDanger1" value="Tidak Aktif">
-                      <label for="radioDanger1">Tidak Aktif</label>
-                    </div>
-                  </div>
-                  <!-- /.form-group -->
-                </div>
-              </div>
-            </div>
-        </div>
-        <div class="card-footer">
-          <div class="row">
-            <div class="col-12">
-              <button type="button" class="btn btn-default  float-right" data-dismiss="modal">Tutup</button>
-              <button type="submit" class="btn btn-primary" name="save">Tambah Materi</button>
-              <button type="reset" class="btn btn-danger ">Reset</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div> --}}
 @endsection
 
 @section('javascript')

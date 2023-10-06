@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Pertemuan;
 use App\Http\Requests\StorePertemuanRequest;
 use App\Http\Requests\UpdatePertemuanRequest;
+use App\Models\Absen;
 use App\Models\Atlet;
 use App\Models\Jadwal;
+use App\Models\JadwalIsi;
 use App\Models\Materi;
 use App\Models\PertemuanMateri;
 
@@ -60,7 +62,16 @@ class PertemuanController extends Controller
 
         $getLastPertemuan = Pertemuan::latest()->first();
 
-        if ($request->pilih2) {
+        $jadwal_isis = JadwalIsi::where('jadwal_id', $request->jadwal_id)->get();
+        foreach ($jadwal_isis as $jadwal_isi) {
+            $absen = new Absen;
+            $absen->absen_waktu = null;
+            $absen->atlet_id = $jadwal_isi->atlet_id;
+            $absen->pertemuan_id = $getLastPertemuan->id;
+            $absen->save();
+        }
+
+        if (count($request->all()) > 8) {
             $materis = Materi::where('materi_status', 'aktif')->count();
             for ($i = 1; $i <= $materis; $i++) {
                 $pilih = 'pilih' . $i;
