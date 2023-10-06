@@ -1,3 +1,4 @@
+@dd($datas)
 @extends('partials.main')
 
 @section('content')
@@ -30,7 +31,8 @@
           <h3 class="card-title">Daftar Absen</h3>
         </div>
         <!-- /.card-header -->
-        <form action="" method="post">
+        <form action="{{ route('absen.store') }}" method="post">
+          @csrf
           <div class="card-body">
             <div class="table-responsive">
               <table id="example1" class="table table-bordered table-striped">
@@ -43,40 +45,37 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($absens as $absen)
-
+                  @foreach ($jadwal_isis as $jadwal_isi)
+                  @foreach($jadwal_isi->atlet->absen as $absen)
                   <tr>
                     <td><input type='checkbox' class='mycheckbox' name='pilih{{ $loop->iteration }}'
-                        value="{{ $absen->atlet->id }}" {{ $absen->absen_waktu === null ? '' : 'checked' }}/></td>
+                        value="{{ $absen->id }}" {{ $absen->absen_waktu === null ?
+                      '' : 'checked' }}/></td>
                     <td>
                       {{ $loop->iteration }}
                     </td>
                     <td>
-                      {{ $absen->atlet->atlet_nama_lengkap }}
+                      {{ $jadwal_isi->atlet->atlet_nama_lengkap }}
                     </td>
-                    <?php
-                      if (!empty($absen['absen_waktu'])) {
-                      ?>
                     <td>
-
+                      @if ($absen->absen_waktu!==null)
                       @php
                       $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $absen->absen_waktu);
                       $bulan = $date->format('d F Y');
                       $jam = $date->format('H:i');
                       @endphp
                       {{ $bulan. ' pukul '.$jam }}
-
-                    </td>
-                    <?php } else { ?>
-                    <td>-</td>
-                    <?php } ?>
+                      @else
+                      -
+                      @endif
                   </tr>
+                  @endforeach
                   @endforeach
 
                 </tbody>
               </table>
             </div>
-            <button class="btn btn-primary  mt-2" type="submit" name="absen" id="saves">Edit Absen</button>
+            <button class="btn btn-primary  mt-2" type="submit" id="saves">Edit Absen</button>
           </div>
         </form>
         <!-- /.card-body -->
@@ -87,4 +86,45 @@
   </div>
   <!-- /.row -->
 </section>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+  document.getElementById("saves").style.display = "none";
+  const checkboxes = document.querySelectorAll(".mycheckbox");
+
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener("change", function() {
+      const isChecked = Array.from(checkboxes).some(function(cb) {
+        return cb.checked;
+      });
+
+      if (isChecked) {
+        document.getElementById("saves").style.display = "inline-block";
+      } else {
+        document.getElementById("saves").style.display = "none";
+      }
+    });
+  });
+
+
+  function checkAll(ele) {
+    var checkboxes = document.getElementsByTagName('input');
+    if (ele.checked) {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox' && !(checkboxes[i].disabled)) {
+          checkboxes[i].checked = true;
+          document.getElementById("saves").style.display = "inline-block";
+        }
+      }
+    } else {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox') {
+          document.getElementById("saves").style.display = "none";
+          checkboxes[i].checked = false;
+        }
+      }
+    }
+  }
+</script>
 @endsection

@@ -75,7 +75,7 @@ class JadwalIsiController extends Controller
                     $absen = new Absen;
                     $absen->absen_waktu = null;
                     $absen->atlet_id =  $request->$pilih;
-                    $absen->pertemuan_id = ;
+                    // $absen->pertemuan_id = ;
                     $absen->save();
                 }
             } else {
