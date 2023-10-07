@@ -105,10 +105,18 @@
                         <p class="text-muted text-sm"><b>Deskripsi: </b>
                           {{ $pm->materi->materi_deskripsi }}
                         </p>
+
+                        @foreach ($galeri_nama as $galeri)
                         <ul class="ml-4 mb-0 fa-ul text-muted">
-                          <i class="fas fa-file"></i>&nbsp<a href="download.php?file=" target="_blank()">
+                          <i class="fas fa-file"></i>&nbsp<a
+                            href="{{ route('download_materi', ['filename'=>$galeri['galeri_nama']]) }}"
+                            target="_blank()">
+                            Materi {{
+                            $loop->iteration }}
                           </a><br>
                         </ul>
+                        @endforeach
+
                       </div>
                     </div>
                   </div>
@@ -166,7 +174,10 @@
           </div>
         </a>
         <div id="absen" class="collapse show" data-parent="#accordion">
-          <form action="" method="post">
+          <form action="{{ route('absen.store') }}" method="post">
+            @csrf
+            <input type="hidden" name="pertemuan_id"
+              value="{{ $datas[0]['jadwal_isi'][0]['atlet'][0]['absen'][0]['pertemuan_id'] }}">
             <div class="card-body">
               <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped">
@@ -179,32 +190,38 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($atlets as $atlet)
-                    <tr>
-                      <td><input type='checkbox' class='mycheckbox' name='pilih{{ $loop->iteration }}'
-                          value="{{ $atlet->id }}" /></td>
-                      <td>
-                        {{ $loop->iteration }}
+                    @for ($i = 0; $i < count($datas[0]['jadwal_isi']); $i++) <tr>
+
+                      <td><input type='checkbox' class='mycheckbox' name='pilih{{ $i }}'
+                          value="{{ $datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['id'] }}" {{
+                          $datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['absen_waktu']===null ? '' : 'checked'
+                          }} />
                       </td>
                       <td>
-                        {{ $atlet->atlet_nama_lengkap }}
+                        {{ $i+1 }}
                       </td>
-                      {{-- @foreach ($atlet->absen as $absen)
-                      {{ $absen->absen_waktu }}
-                      @if ($absen->absen_waktu !== null)
                       <td>
-                        <?= tgl_indo(substr($absen['absen_waktu'], 0, 10)) . " " . substr($absen['absen_waktu'], 11, 20); ?>
+                        {{ $datas[0]['jadwal_isi'][$i]['atlet'][0]['atlet_nama_lengkap'] }}
                       </td>
-                      @else
-                      <td>-</td>
-                      @endif
-                    </tr>
-                    @endforeach --}}
-                    @endforeach
+                      <td>
+                        @if ($datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['absen_waktu']!==null)
+                        @php
+                        $date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',
+                        $datas[0]['jadwal_isi'][$i]['atlet'][0]['absen'][0]['absen_waktu']);
+                        $bulan = $date->format('d F Y');
+                        $jam = $date->format('H:i');
+                        @endphp
+                        {{ $bulan. ' pukul '.$jam }}
+                        @else
+                        -
+                        @endif
+                        </tr>
+                        @endfor
+
                   </tbody>
                 </table>
               </div>
-              <button class="btn btn-primary  mt-2" type="submit" name="absen" id="saves">Tambah Data</button>
+              <button class="btn btn-primary  mt-2" type="submit" id="saves">Edit Absen</button>
             </div>
           </form>
         </div>
