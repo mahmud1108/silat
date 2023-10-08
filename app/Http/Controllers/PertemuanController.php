@@ -22,11 +22,41 @@ class PertemuanController extends Controller
     {
         if (auth()->user()->role === 'admin') {
             $pertemuans = Pertemuan::all();
-        } else {
-            $jadwal = jadwal::where('user_id', auth()->user()->id)->get();
+            return view('admin-pelatih.pertemuan', compact('pertemuans'));
         }
 
-        return view('admin-pelatih.pertemuan', compact('pertemuans'));
+        $jadwals = jadwal::where('user_id', auth()->user()->id)->get();
+
+        $datas = [];
+        foreach ($jadwals as $jadwal) {
+            $pertemuans = [];
+            foreach ($jadwal->pertemuan as $pertemuan) {
+                $pertemuan_materis = [];
+                foreach ($pertemuan->pertemuan_materi as $pertemuan_materi) {
+                    $pertemuan_materis[] =
+                        [
+                            'id' => $pertemuan_materi->id
+                        ];
+                }
+                $pertemuans[] =
+                    [
+                        'id' => $pertemuan->id,
+                        'pertemuan_nama' => $pertemuan->pertemuan_nama,
+                        'pertemuan_mulai' => $pertemuan->pertemuan_mulai,
+                        'pertemuan_selesai' => $pertemuan->pertemuan_selesai,
+                        'pertemuan_materi' => $pertemuan_materis
+                    ];
+            }
+            $datas[] =
+                [
+                    'jadwal_id' => $jadwal->id,
+                    'jadwal_nama' => $jadwal->jadwal_nama,
+                    'pertemuan' => $pertemuans
+
+                ];
+        }
+        // return response()->json($datas[0]['pertemuan'][0]['pertemuan_materi']);
+        return view('admin-pelatih.pertemuan', compact('datas'));
     }
 
     /**

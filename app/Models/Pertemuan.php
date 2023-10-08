@@ -20,4 +20,9 @@ class Pertemuan extends Model
     {
         return $this->hasMany(PertemuanMateri::class);
     }
+
+    public function absen()
+    {
+        return $this->hasMany(Absen::class);
+    }
 }

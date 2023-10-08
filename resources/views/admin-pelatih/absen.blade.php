@@ -39,9 +39,11 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
+
+              @if (auth()->user()->role === 'admin')
+
               <tbody>
                 @foreach ($pertemuans as $pertemuan)
-
                 <tr>
                   <td>
                     {{ $loop->iteration }}
@@ -120,8 +122,98 @@
                   </div>
                 </tr>
                 @endforeach
-
               </tbody>
+
+
+              @else
+
+              <tbody>
+                @for ($i = 0; $i < count($datas[0]['pertemuan']); $i++) <tr>
+                  <td>
+                    {{ $i+1 }}
+                  </td>
+                  <td>
+                    {{ $datas[0]['pertemuan'][$i]['pertemuan_nama'] }} <br><i>
+                      @php
+                      $date_mulai = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',
+                      $datas[0]['pertemuan'][$i]['pertemuan_mulai']);
+                      $bulan_mulai = $date_mulai->format('d F Y');
+                      $jam_mulai = $date_mulai->format('H:i');
+
+                      $date_selesai = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',
+                      $datas[0]['pertemuan'][$i]['pertemuan_selesai']);
+                      $bulan_selesai = $date_selesai->format('d F Y');
+                      $jam_selesai = $date_selesai->format('H:i');
+                      @endphp
+                      {{ $bulan_mulai. ' pukul '.$jam_mulai }} </i>
+                    <b>sampai</b>
+                    <i>
+                      {{ $bulan_selesai. ' pukul '.$jam_selesai }}
+                    </i>
+                  </td>
+                  @php
+                  $a = App\Models\Absen::where('pertemuan_id', $datas[0]['pertemuan'][$i]['id'])->count();
+                  $ab = App\Models\Absen::where('pertemuan_id',
+                  $datas[0]['pertemuan'][$i]['id'])->whereNotNull('absen_waktu')->count();
+                  if ($a > 0 and $ab > 0) {
+                  $persen = $ab / $a * 100;
+                  $persen = intval($persen);
+                  } else {
+                  $persen = intval(0);
+                  }
+                  @endphp
+                  <td>
+                    {{ $datas[0]['jadwal_nama'] }}
+                  </td>
+                  <td>
+                    <b>
+                      {{ $persen }}%
+                    </b>
+                  </td>
+
+                  <td class="text-center py-0 align-middle">
+                    <div class="btn-group btn-group-sm">
+                      <a href="{{ route('absen.show', ['absen'=>$datas[0]['pertemuan'][$i]['id']]) }}"
+                        class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-danger" data-toggle="modal"
+                        data-target="#modal-sm{{ $datas[0]['pertemuan'][$i]['id'] }}"><i class="fas fa-trash"></i></a>
+                    </div>
+                  </td>
+
+                  <div class="modal fade" id="modal-sm{{ $datas[0]['pertemuan'][$i]['id'] }}">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Hapus</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Yakin hapus pertemuan <b>
+                              {{ $datas[0]['pertemuan'][$i]['pertemuan_nama'] }}
+                            </b>?</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                          <form action="{{ route('absen.destroy', ['absen'=>$datas[0]['pertemuan'][$i]['id']]) }}"
+                            method="post">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Ya</button>
+                          </form>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  </tr>
+                  @endfor
+              </tbody>
+
+              @endif
+
             </table>
           </div>
         </div>

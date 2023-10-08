@@ -22,11 +22,41 @@ class AbsenController extends Controller
     {
         if (auth()->user()->role === 'admin') {
             $pertemuans = Pertemuan::all();
-        } else {
-            $pertemuans = Jadwal::where('user_id', auth()->user()->id)->get();
+            return view('admin-pelatih.absen', compact('pertemuans'));
         }
 
-        return view('admin-pelatih.absen', compact('pertemuans'));
+        $jadwals = jadwal::where('user_id', auth()->user()->id)->get();
+
+        $datas = [];
+        foreach ($jadwals as $jadwal) {
+            $pertemuans = [];
+            foreach ($jadwal->pertemuan as $pertemuan) {
+                $absens = [];
+                foreach ($pertemuan->absen as $absen) {
+                    $absens[] =
+                        [
+                            'id' => $absen->id
+                        ];
+                }
+                $pertemuans[] =
+                    [
+                        'id' => $pertemuan->id,
+                        'pertemuan_nama' => $pertemuan->pertemuan_nama,
+                        'pertemuan_mulai' => $pertemuan->pertemuan_mulai,
+                        'pertemuan_selesai' => $pertemuan->pertemuan_selesai,
+                        'pertemuan_materi' => $absens
+                    ];
+            }
+            $datas[] =
+                [
+                    'jadwal_id' => $jadwal->id,
+                    'jadwal_nama' => $jadwal->jadwal_nama,
+                    'pertemuan' => $pertemuans
+
+                ];
+        }
+        // return response()->json($datas);
+        return view('admin-pelatih.absen', compact('datas'));
     }
 
     /**
