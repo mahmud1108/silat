@@ -14,6 +14,7 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\UserController;
 use App\Models\PertemuanMateri;
+use App\Policies\CekRutinPolicy;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,6 +58,8 @@ route::group(['middleware' => 'admin_pelatih'], function () {
     route::get('/galeri/download/{filename}', [GaleriController::class, 'download'])->name('download_materi');
 
     Route::resource('cek', CekRutinController::class)->only('index', 'store', 'update', 'destroy');
+    route::get('/get_cek_rutin/{atlet_id}', [CekRutinController::class, 'get_cek_rutin'])->name('get_cek_rutin');
+
     Route::resource('pengumuman', PengumumanController::class)->only('index', 'store', 'update', 'destroy');
     Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
 

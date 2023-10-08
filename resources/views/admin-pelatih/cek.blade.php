@@ -20,7 +20,7 @@
 
 <!-- Main content -->
 <section class="content">
-  <div class="card card-secondary">
+  <div class="card card-secondary collapsed-card">
     <div class=" card-header">
       <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
         <i class="fas fa-plus"></i>
@@ -46,17 +46,9 @@
                   <label>Nama Atlet</label>
                   <select name="cr_atlet" id="cek_atlet" class="form-control select2" style="width: 100%;" required>
                     <option value="">Pilih Atlet</option>
-                    {{--
-                    <?php
-                    $atlet = mysqli_query($koneksi, "SELECT * FROM atlet a LEFT JOIN kategori k ON a.atlet_kategori=k.kategori_id LEFT JOIN kelas_usia ku ON a.atlet_kelas_usia=ku.kelas_usia_id WHERE a.atlet_status='Aktif'");
-                    while ($datlet = mysqli_fetch_array($atlet)) {
-                      echo "<option value='$datlet[atlet_id]'";
-                      if ($num_id == $datlet['atlet_id']) {
-                        echo "selected";
-                      }
-                      echo ">$datlet[atlet_nama_lengkap]</option>";
-                    }
-                    ?> --}}
+                    @foreach ($atlets as $atlet)
+                    <option value="{{ $atlet->id }}">{{ $atlet->atlet_nama_lengkap }}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
@@ -96,8 +88,6 @@
                       <= 50 "Kurang Baik" ; <br>
                         <= 70 "Baik" ; <br>
                           <= 100 "Baik Sekali" ; <br>
-
-
                     </div>
                   </div>
                 </div>
@@ -235,4 +225,77 @@
   </div>
   <!-- /.row -->
 </section> --}}
+@endsection
+
+@section('javascript')
+
+<script>
+  $(document).ready(function() {
+    // Memuat konten ke dalam elemen input #cek_atlet dan mengatur nilai input
+    // alert($("#cek_atlet").val());
+    var selectedValue = $("#cek_atlet").val();
+    // mengambil csrf token dari meta head
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    if (selectedValue) {
+      $.ajax({
+        type: 'get',
+        url: 'get_cek_rutin/'+selectedValue,
+        data: {
+          atlet_id: selectedValue,
+        },
+        success: function(response) {
+          // console.log(selectedValue);
+          document.getElementById("ttl").innerHTML = "<b>" + response.ttl + "</b>";
+          document.getElementById("atlet_nama_lengkap").innerHTML = "<b>" + response.atlet_nama_lengkap + "</b>";
+          document.getElementById("detail_cr").href = "cek_rutin_detail.php?id=" + response.detail_cr;
+          document.getElementById("atlet_alamat").innerHTML = "Alamat: " + response.atlet_alamat;
+          document.getElementById("atlet_no_hp").innerHTML = "No Hp" + response.atlet_no_hp;
+          document.getElementById("atlet_foto").src = "../gambar/user/atlet/" + response.atlet_foto;
+          document.getElementById("atlet_kategori").innerHTML = "Kategori : " + response.atlet_kategori + ' (' + response.atlet_kelas_usia + ')';
+          document.getElementById("display_info").style.display = "block";
+          document.getElementById("form_isi").style.display = "block";
+        }
+      });
+
+    } else {
+      document.getElementById("form_isi").style.display = "none";
+      document.getElementById("display_info").style.display = "none";
+    }
+  });
+  $(function() {
+    document.getElementById("display_info").style.display = "none";
+    document.getElementById("form_isi").style.display = "none";
+
+    $("#cek_atlet").change(function() {
+      var selectedText = $(this).find("option:selected").text();
+      var selectedValue = $(this).val();
+      if (selectedValue) {
+        $.ajax({
+          type: 'get',
+          url: 'get_cek_rutin',
+          data: {
+            atlet_id: selectedValue,
+          },
+          success: function(response) {
+            console.log(response);
+            document.getElementById("ttl").innerHTML = "<b>" + response.ttl + "</b>";
+            document.getElementById("atlet_nama_lengkap").innerHTML = "<b>" + response.atlet_nama_lengkap + "</b>";
+            document.getElementById("detail_cr").href = "cek_rutin_detail.php?id=" + response.detail_cr;
+            document.getElementById("atlet_alamat").innerHTML = "Alamat: " + response.atlet_alamat;
+            document.getElementById("atlet_no_hp").innerHTML = "No Hp" + response.atlet_no_hp;
+            document.getElementById("atlet_foto").src = "../gambar/user/atlet/" + response.atlet_foto;
+            document.getElementById("atlet_kategori").innerHTML = "Kategori : " + response.atlet_kategori + ' (' + response.atlet_kelas_usia + ')';
+            document.getElementById("display_info").style.display = "block";
+            document.getElementById("form_isi").style.display = "block";
+          }
+        });
+
+      } else {
+        document.getElementById("form_isi").style.display = "none";
+        document.getElementById("display_info").style.display = "none";
+      }
+    });
+  });
+</script>
 @endsection

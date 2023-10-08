@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CekRutin;
 use App\Http\Requests\StoreCekRutinRequest;
 use App\Http\Requests\UpdateCekRutinRequest;
+use App\Models\Atlet;
 
 class CekRutinController extends Controller
 {
@@ -14,9 +15,19 @@ class CekRutinController extends Controller
     public function index()
     {
         $ceks = CekRutin::all();
+        $atlets = Atlet::where('atlet_status', 'Aktif')->get();
 
-        return view('admin-pelatih.cek', compact('ceks'));
+        return view('admin-pelatih.cek', compact('ceks', 'atlets'));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function get_cek_data($atlet_id)
+    {
+        dd($atlet_id);
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -23,7 +23,7 @@ class PertemuanController extends Controller
         if (auth()->user()->role === 'admin') {
             $pertemuans = Pertemuan::all();
         } else {
-            $pertemuans = Jadwal::where('user_id', auth()->user()->id)->get();
+            $jadwal = jadwal::where('user_id', auth()->user()->id)->get();
         }
 
         return view('admin-pelatih.pertemuan', compact('pertemuans'));
@@ -168,9 +168,15 @@ class PertemuanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePertemuanRequest $request, Pertemuan $pertemuan)
+    public function update(UpdatePertemuanRequest $request, $pertemuan)
     {
-        //
+        Pertemuan::where('id', $pertemuan)
+            ->update([
+                'pertemuan_nama' => $request->pertemuan_nama
+            ]);
+
+        toast('Berhasil mengubah data', 'success');
+        return redirect()->route('pertemuan.index');
     }
 
     /**

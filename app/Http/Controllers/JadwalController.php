@@ -20,6 +20,9 @@ class JadwalController extends Controller
         $atlets = Atlet::where('atlet_status', 'Aktif')->get();
         $pelatihs = User::where('role', 'pelatih')->where('user_status', 'aktif')->get();
         $jadwals = Jadwal::all();
+        if (auth()->user()->role === 'pelatih') {
+            $jadwals = Jadwal::where('user_id', auth()->user()->id)->get();
+        }
         return view('admin-pelatih.jadwal', compact('jadwals', 'pelatihs', 'atlets'));
     }
 
