@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    image: silat
+    container_name: silat
+    restart: unless-stopped
+    tty: true
+    environment:
+      - SERVICE_NAME=app
+    working_dir: /projek/silat
+    volumes:
+      - .:/projek/silat
+      - ./storage/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - silat
+
+  webserver:
+    image: nginx:latest
+    container_name: nginxsilat
+    restart: unless-stopped
+    tty: true
+    ports:
+    - "2022:80"
+    volumes:
+      - .:/projek/silat
+      - ./storage/:/etc/nginx/conf.d/
+    networks:
+      - silat
+
+  db:
+    image: mysql:5.7
+    container_name: dbsilat
+    restart: always
+    tty: true
+    ports:
+      - "20222:3306"
+    volumes:
+      - lbdata:/var/lib/mysql/
+    environment:
+      MYSQL_PASSWORD: silat
+      MYSQL_ROOT_PASSWORD: silat
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - silat
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pmasilat
+    links:
+    - db
+    restart: always
+    ports:
+      - 7000:80
+    networks:
+      - silat
+
+networks:
+  silat:
+    driver: bridge
+
+
+volumes:
+  lbdata:
+    driver: local
+
