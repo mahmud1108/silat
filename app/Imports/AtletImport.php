@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Atlet;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 
@@ -32,7 +33,7 @@ class AtletImport implements ToModel
             'kelas_usia_id' => $row[12],
             'created_at' => $row[13],
             'updated_at' => $row[14],
-            'id' => $row[15]
+            'id' => $row[15],
         ]);
     }
 }

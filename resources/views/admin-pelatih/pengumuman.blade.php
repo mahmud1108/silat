@@ -120,7 +120,7 @@
                     {{ $pengumuman->pengumuman_judul }}
                   </td>
                   <td>
-                    {{ $pengumuman->user_nama }}
+                    {{ $pengumuman->user->user_nama }}
                   </td>
                   <td>
                     @if (!$pengumuman->file)

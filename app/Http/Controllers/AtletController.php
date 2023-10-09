@@ -66,9 +66,11 @@ class AtletController extends Controller
      */
     public function import(ImportExcelAtletRequest $request)
     {
-        // dd($request->import_excel);
+
         // $file = ImageFileHelper::instance()->upload($request->import_excel, 'import');
-        Excel::import(new AtletImport, $request->import_excel);
+        // dd(url($file));
+        // dd($request->file('import_excel'));
+        Excel::import(new AtletImport, $request->file('import_excel'));
     }
 
     /**
@@ -96,6 +98,9 @@ class AtletController extends Controller
             ->update([
                 'atlet_nama_lengkap' => $request->nama,
             ]);
+
+        toast("Berhasil mengubah data", 'success');
+        return redirect()->route('atlet.index');
     }
 
     /**

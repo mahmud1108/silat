@@ -19,7 +19,7 @@ class PengumumanController extends Controller
         if (auth()->user()->role === 'admin') {
             $pengumumans = Pengumuman::all();
         } else {
-            $pengumumans = Pengumuman::where('user_id', auth()->user()->id);
+            $pengumumans = Pengumuman::where('user_id', auth()->user()->id)->get();
         }
         return view('admin-pelatih.pengumuman', compact('pengumumans'));
     }
