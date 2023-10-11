@@ -13,6 +13,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
+        dd($request);
         if (!$request->expectsJson()) {
             // Alert::info('harap login Terlebih dahulu');
             return route('login-admin');

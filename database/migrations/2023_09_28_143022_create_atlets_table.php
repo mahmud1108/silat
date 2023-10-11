@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('atlet_foto');
             $table->string('atlet_email');
-            $table->string('atlet_password');
+            $table->string('password');
             $table->enum('atlet_status', ['Aktif', 'Tidak Aktif']);
             $table->string('atlet_keterangan');
             $table->foreignId('kategori_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

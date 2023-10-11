@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as AuthAtlet;
 
-class Atlet extends Model
+class Atlet extends AuthAtlet
 {
     use HasFactory;
 

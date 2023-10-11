@@ -31,10 +31,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::view('/admin', 'login-admin')->name('login-admin');
-Route::view('/atlet', 'login-atlet')->name('login-atlet');
+Route::view('/', 'login-atlet')->name('login-atlet');
 
 Route::post('/admin', [AuthController::class, 'login_admin']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout-admin');
+Route::post('/atlet_login', [AuthController::class, 'login_atlet'])->name('post_login_atlet');
+Route::get('/logoutatlet', [AuthController::class, 'logout_atlet'])->name('logout_atlet');
+
+route::middleware(['auth:atlet'])->prefix('/atlet')->group(function () {
+    route::get('/dashboard', [DashboardController::class, 'atlet'])->name('dashboard_atlet');
+});
 
 route::group(['middleware' => 'admin_pelatih'], function () {
     // Route::get('/tes', [MateriController::class, 'index']);

@@ -44,9 +44,9 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'user' => [
+        'atlet' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'atlets',
         ],
     ],
 
@@ -75,7 +75,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ]
+        ],
+        'atlets' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Atlet::class,
+        ],
     ],
 
     /*

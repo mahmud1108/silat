@@ -17,4 +17,9 @@ class DashboardController extends Controller
         $atlet = Atlet::all()->count();
         return view('admin-pelatih.dashboard', compact('jadwal', 'pertemuan', 'atlet'));
     }
+
+    public function atlet()
+    {
+        return view('atlet.dashboard');
+    }
 }

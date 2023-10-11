@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminOnlyMiddleware;
+use App\Http\Middleware\AtletMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin_pelatih' => AdminMiddleware::class,
-        'admin_only' => AdminOnlyMiddleware::class
+        'admin_only' => AdminOnlyMiddleware::class,
+        'atlet'=>AtletMiddleware::class
     ];
 }
