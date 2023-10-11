@@ -12,6 +12,7 @@ use App\Http\Controllers\JadwalIsiController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PertemuanController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UserController;
 use App\Models\PertemuanMateri;
 use App\Policies\CekRutinPolicy;
@@ -46,8 +47,13 @@ route::group(['middleware' => 'admin_pelatih'], function () {
     // Route::get('/tes', [MateriController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
+    route::get('/profil', [ProfilController::class, 'index'])->name('ubah_profil');
+    route::post('/image_update', [ProfilController::class, 'image_update'])->name('image_update');
+    route::post('/profil/{user}', [ProfilController::class, 'save'])->name('save_profil');
+
+    Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy', 'show');
     route::post('/user/{user}', [UserController::class, 'role'])->name('user_role');
+
 
     Route::resource('jadwal_isi', JadwalIsiController::class)->only('index', 'store', 'update', 'destroy', 'show');
     Route::resource('jadwal', JadwalController::class)->only('index', 'store', 'update', 'destroy');
