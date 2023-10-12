@@ -37,7 +37,7 @@ class ProfilController extends Controller
     public function image_update(Request $request)
     {
         $user = User::where('id', auth()->user()->id)->first();
-        ImageFileHelper::instance()->delete($user->user_gambar);
+        // ImageFileHelper::instance()->delete($user->user_gambar);
 
         $request->validate([
             'update_gambar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
