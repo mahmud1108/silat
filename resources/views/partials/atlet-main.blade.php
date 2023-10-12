@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Simpel Pensil | {{ auth()->user()->role }}</title>
+    <title>Simpel Pensil | {{ auth()->user()->atlet_nama_lengkap }}</title>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -130,17 +130,19 @@
 
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ auth()->user()->atlet_gambar }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset(auth()->user()->atlet_foto) }}" class="img-circle elevation-2"
+                            alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="profil_tampil.php" class="d-block">{{ auth()->user()->atlet_nama_lengkap }}</a>
+                        <a href="{{ route('atlet_profil') }}"
+                            class="d-block">{{ auth()->user()->atlet_nama_lengkap }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">
+                            <a href="{{ route('dashboard_atlet') }}" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Home</p>
                             </a>
@@ -171,7 +173,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="cek_rutin_tampil.php?id=<?= $_SESSION['atlet_id'] ?>" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="nav-icon fa fa-calendar"></i>
                                 <p>
                                     Cek Rutin

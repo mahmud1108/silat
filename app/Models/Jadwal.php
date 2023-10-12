@@ -16,8 +16,6 @@ class Jadwal extends Model
         return $this->belongsTo(User::class);
     }
 
-    // isi atlet dalam suatu jadwal
-
     public function jadwal_isi()
     {
         return $this->hasMany(JadwalIsi::class);

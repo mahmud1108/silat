@@ -41,6 +41,10 @@ Route::get('/logoutatlet', [AuthController::class, 'logout_atlet'])->name('logou
 
 route::middleware(['auth:atlet'])->prefix('/atlet')->group(function () {
     route::get('/dashboard', [DashboardController::class, 'atlet'])->name('dashboard_atlet');
+
+    route::get('/profil', [ProfilController::class, 'profil_atlet'])->name('atlet_profil');
+    route::post('/profil_atlet_save', [ProfilController::class, 'save_profil_atlet'])->name('save_profil_atlet');
+    route::post('/update_foto_atlet', [ProfilController::class, 'update_foto_atlet'])->name('update_foto_atlet');
 });
 
 route::group(['middleware' => 'admin_pelatih'], function () {
