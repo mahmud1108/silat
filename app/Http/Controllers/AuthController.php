@@ -70,4 +70,11 @@ class AuthController extends Controller
         toast('Email dan password tidak cocok');
         return redirect()->route('login-atlet');
     }
+
+    public function logout_atlet()
+    {
+        Auth::logout();
+
+        return redirect()->route('login-atlet');
+    }
 }
