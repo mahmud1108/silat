@@ -13,6 +13,7 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SidebarController;
 use App\Http\Controllers\UserController;
 use App\Models\PertemuanMateri;
 use App\Policies\CekRutinPolicy;
@@ -45,6 +46,15 @@ route::middleware(['auth:atlet'])->prefix('/atlet')->group(function () {
     route::get('/profil', [ProfilController::class, 'profil_atlet'])->name('atlet_profil');
     route::post('/profil_atlet_save', [ProfilController::class, 'save_profil_atlet'])->name('save_profil_atlet');
     route::post('/update_foto_atlet', [ProfilController::class, 'update_foto_atlet'])->name('update_foto_atlet');
+
+    Route::get('/jadwal', [SidebarController::class, 'jadwal']);
+    Route::get('/pertemuan', [SidebarController::class, 'pertemuan']);
+    Route::get('/absensi', [SidebarController::class, 'absensi']);
+    Route::get('/cek_rutin', [SidebarController::class, 'cek_rutin']);
+    Route::get('/pengumuman', [SidebarController::class, 'pengumuman']);
+
+    route::get('/input_absen/{absen}', [AbsenController::class, 'input_absen'])->name('input_absen');
+    route::get('/absen_detail/{pertemuan}', [AbsenController::class, 'absen_detail'])->name('absen_detail');
 });
 
 route::group(['middleware' => 'admin_pelatih'], function () {

@@ -187,4 +187,31 @@ class AbsenController extends Controller
         toast('Berhasil menghapus data', 'success');
         return redirect()->route('absen.index');
     }
+
+    public function input_absen($absen)
+    {
+        Absen::where('atlet_id', auth()->user()->id)
+            ->where('id', $absen)
+            ->update([
+                'absen_waktu' => date("Y-m-d H:i:s")
+            ]);
+
+        toast("Berhasil absen", 'success');
+        return redirect('/atlet/absensi');
+    }
+
+    public function absen_detail($pertemuan)
+    {
+        $absen = Absen::where('atlet_id', auth()->user()->id)
+            ->where('pertemuan_id', $pertemuan)
+            ->first();
+
+        $pertemuan = Pertemuan::where('id', $absen->pertemuan_id)->first();
+
+        $absens = Absen::whereNotNull('absen_waktu')
+            ->where('pertemuan_id', $pertemuan->id)
+            ->get();
+
+        return view('atlet.absen_detail', compact('absens'));
+    }
 }
