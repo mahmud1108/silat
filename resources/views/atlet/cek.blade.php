@@ -52,16 +52,6 @@
                                         </tr>
                                     @endfor
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tinggi Badan</th>
-                                        <th>Berat Badan</th>
-                                        <th>Mental</th>
-                                        <th>Fisik</th>
-                                        <th>Waktu</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>

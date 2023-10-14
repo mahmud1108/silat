@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Absen;
 use App\Models\CekRutin;
+use App\Models\JadwalIsi;
+use App\Models\Pengumuman;
 use Dotenv\Repository\RepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -12,17 +14,30 @@ class SidebarController extends Controller
 {
     public function jadwal()
     {
-        return view('atlet.jadwal');
+        $jadwal_isis = JadwalIsi::where('atlet_id', auth()->user()->id)->get();
+        return view('atlet.jadwal', compact('jadwal_isis'));
     }
 
     public function pertemuan()
     {
-        return view('atlet.pertemuan');
+        $caption = 'Daftar Pertemuan';
+        $judul_jadwal = '';
+        $absens = Absen::where('atlet_id', auth()->user()->id)->get();
+
+        return view(
+            'atlet.pertemuan',
+            compact(
+                'absens',
+                'caption',
+                'judul_jadwal'
+            )
+        );
     }
 
     public function absensi()
     {
-        $absens = Absen::where('atlet_id', auth()->user()->id)->get();
+        $absens = Absen::where('atlet_id', auth()->user()->id)->orderBy('id', 'desc')->get();
+
         return view(
             'atlet.absensi',
             compact('absens')
@@ -76,6 +91,8 @@ class SidebarController extends Controller
 
     public function pengumuman()
     {
-        return view('atlet.pengumuman');
+
+        $pengumumans = Pengumuman::all();
+        return view('atlet.pengumuman', compact('pengumumans'));
     }
 }

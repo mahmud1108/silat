@@ -18,6 +18,6 @@ class Materi extends Model
 
     public function galeri()
     {
-        return $this->hasMany(Galeri::class, 'materi_id', 'id');
+        return $this->hasMany(Galeri::class);
     }
 }

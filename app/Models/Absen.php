@@ -16,10 +16,6 @@ class Absen extends Model
         return $this->belongsTo(Pertemuan::class);
     }
 
-    public function jadwal()
-    {
-        return $this->belongsTo(Jadwal::class);
-    }
 
     public function atlet()
     {

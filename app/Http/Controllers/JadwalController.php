@@ -70,7 +70,39 @@ class JadwalController extends Controller
      */
     public function show(Jadwal $jadwal)
     {
-        //
+        $datas = [];
+        foreach ($jadwal->pertemuan as $pertemuan) {
+            $pertemuan_materis = [];
+            foreach ($pertemuan->pertemuan_materi as $pertemuan_materi) {
+                $galeris = [];
+                foreach ($pertemuan_materi->materi->galeri as $galeri) {
+                    $galeris[] =
+                        [
+                            'id' => $galeri->id,
+                            'galeri_nama' => $galeri->galeri_nama
+                        ];
+                }
+                $pertemuan_materis[] =
+                    [
+                        'id' => $pertemuan_materi->id,
+                        'materi' => $pertemuan_materi->materi,
+                    ];
+            }
+            $datas[] =
+                [
+                    'id' => $pertemuan->id,
+                    'pertemuan_nama' => $pertemuan->pertemuan_nama,
+                    'pertemuan_deskripsi' => $pertemuan->pertemuan_deskripsi,
+                    'pertemuan_mulai' => $pertemuan->pertemuan_mulai,
+                    'pertemuan_selesai' => $pertemuan->pertemuan_selesai,
+                    'user' => $jadwal->user->user_nama,
+                    'pertemuan_materi' => $pertemuan_materis
+                ];
+        }
+
+        // return response()->json($datas);
+
+        return view('atlet.pertemuan', compact('datas', 'jadwal'));
     }
 
     /**

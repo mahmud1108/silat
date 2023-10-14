@@ -24,6 +24,19 @@ class PengumumanController extends Controller
         return view('admin-pelatih.pengumuman', compact('pengumumans'));
     }
 
+
+    public function download($filename)
+    {
+        $disk = 'storage/pengumuman/' . $filename;
+
+        if (file_exists($disk)) {
+            $path = 'storage/pengumuman/';
+            return response()->download($disk);
+        }
+
+        abort(404, 'File not found');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

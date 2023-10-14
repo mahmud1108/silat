@@ -15,6 +15,7 @@ use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SidebarController;
 use App\Http\Controllers\UserController;
+use App\Models\Pengumuman;
 use App\Models\PertemuanMateri;
 use App\Policies\CekRutinPolicy;
 use Illuminate\Support\Facades\Route;
@@ -48,13 +49,15 @@ route::middleware(['auth:atlet'])->prefix('/atlet')->group(function () {
     route::post('/update_foto_atlet', [ProfilController::class, 'update_foto_atlet'])->name('update_foto_atlet');
 
     Route::get('/jadwal', [SidebarController::class, 'jadwal'])->name('jadwal');
-    Route::get('/pertemuan', [SidebarController::class, 'pertemuan'])->name('pertemuan');
     Route::get('/absensi', [SidebarController::class, 'absensi'])->name('absensi');
     Route::get('/cek_rutin', [SidebarController::class, 'cek_rutin'])->name('cek');
     Route::get('/pengumuman', [SidebarController::class, 'pengumuman']);
 
     route::get('/input_absen/{absen}', [AbsenController::class, 'input_absen'])->name('input_absen');
     route::get('/absen_detail/{pertemuan}', [AbsenController::class, 'absen_detail'])->name('absen_detail');
+
+    route::get('/pengumuman/{filename}', [PengumumanController::class, 'download'])->name('download_pengumuman');
+    route::get('/jadwal/{jadwal}', [JadwalController::class, 'show'])->name('jadwal_detail');
 });
 
 route::group(['middleware' => 'admin_pelatih'], function () {
