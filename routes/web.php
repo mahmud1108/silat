@@ -47,10 +47,10 @@ route::middleware(['auth:atlet'])->prefix('/atlet')->group(function () {
     route::post('/profil_atlet_save', [ProfilController::class, 'save_profil_atlet'])->name('save_profil_atlet');
     route::post('/update_foto_atlet', [ProfilController::class, 'update_foto_atlet'])->name('update_foto_atlet');
 
-    Route::get('/jadwal', [SidebarController::class, 'jadwal']);
-    Route::get('/pertemuan', [SidebarController::class, 'pertemuan']);
-    Route::get('/absensi', [SidebarController::class, 'absensi']);
-    Route::get('/cek_rutin', [SidebarController::class, 'cek_rutin']);
+    Route::get('/jadwal', [SidebarController::class, 'jadwal'])->name('jadwal');
+    Route::get('/pertemuan', [SidebarController::class, 'pertemuan'])->name('pertemuan');
+    Route::get('/absensi', [SidebarController::class, 'absensi'])->name('absensi');
+    Route::get('/cek_rutin', [SidebarController::class, 'cek_rutin'])->name('cek');
     Route::get('/pengumuman', [SidebarController::class, 'pengumuman']);
 
     route::get('/input_absen/{absen}', [AbsenController::class, 'input_absen'])->name('input_absen');

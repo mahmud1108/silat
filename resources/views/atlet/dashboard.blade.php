@@ -34,7 +34,7 @@
                         <div class="icon">
                             <i class="fa fa-rss-square"></i>
                         </div>
-                        <a href="jadwal_tampil.php" class="small-box-footer">Selengkapnya <i
+                        <a href="{{ route('jadwal') }}" class="small-box-footer">Selengkapnya <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                         <div class="icon">
                             <i class="fa fa-graduation-cap"></i>
                         </div>
-                        <a href="pertemuan_tampil.php" class="small-box-footer">Selengkapnya <i
+                        <a href="{{ route('pertemuan') }}" class="small-box-footer">Selengkapnya <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <div class="icon">
                             <i class="fa fa-user-check"></i>
                         </div>
-                        <a href="absen_tampil.php" class="small-box-footer">Selengkapnya <i
+                        <a href="{{ route('absensi') }}" class="small-box-footer">Selengkapnya <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                         <div class="icon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <a href="cek_rutin_tampil.php" class="small-box-footer">Selengkapnya <i
+                        <a href="{{ route('cek') }}" class="small-box-footer">Selengkapnya <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
 
                                                 <td class="text-center py-0 align-middle">
                                                     <div class="btn-group btn-group-sm">
-                                                        <a href="pertemuan_detail.php?pertemuan_id=<?= $datas['pertemuan_id'] ?>"
+                                                        <a href="{{ route('') }}?pertemuan_id=<?= $datas['pertemuan_id'] ?>"
                                                             title="Detail" class="btn btn-info"><i
                                                                 class="fas fa-eye"></i></a>
                                                     </div>

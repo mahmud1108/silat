@@ -93,15 +93,15 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header">Selamat Datang,
-                            {{ auth()->user()->user_username }}
+                            {{ auth()->user()->atlet_nama_lengkap }}
                         </span>
                         <div class="dropdown-divider"></div>
-                        <a href="profil_tampil.php" class="dropdown-item">
+                        <a href="{{ route('atlet_profil') }}" class="dropdown-item">
                             <i class="fas fa-users mr-2"></i> Profil
                             <span class="float-right text-muted text-sm">edit</span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="logout.php" class="dropdown-item">
+                        <a href="{{ route('logout_atlet') }}" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
                             <span class="float-right text-muted text-sm">akun</span>
                         </a>

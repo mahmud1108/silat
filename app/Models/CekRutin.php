@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CekRutin extends Model
 {
     use HasFactory;
+
+    public function atlet()
+    {
+        return  $this->belongsTo(Atlet::class);
+    }
 }

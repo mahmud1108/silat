@@ -19,8 +19,6 @@ return new class extends Migration
             $table->float('cr_fisik');
             $table->date('cr_waktu');
             $table->foreignId('atlet_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('kelas_usia_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('kategori_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
