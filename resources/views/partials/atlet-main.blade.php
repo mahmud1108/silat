@@ -157,14 +157,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/atlet/pertemuan" class="nav-link">
-                                <i class="nav-icon fa fa-graduation-cap"></i>
-                                <p>
-                                    Pertemuan
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="/atlet/absensi" class="nav-link">
                                 <i class="nav-icon fa fa-user-check"></i>
                                 <p>

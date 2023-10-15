@@ -70,7 +70,9 @@
                                                         class="btn
                                                         btn-info"
                                                         title="Daftar Absen"><i class="fas fa-eye"></i></a>
+                                                </div>
 
+                                                <div class="btn-group btn-group-sm">
                                                     @if ($absen->absen_waktu === null)
                                                         <a href="{{ route('input_absen', ['absen' => $absen->id]) }}"
                                                             class="btn

@@ -57,11 +57,11 @@
                                             <td>{{ count($datas[$i]['pertemuan_materi']) }}</td>
                                             <td class="text-center py-0 align-middle">
                                                 <div class="btn-group btn-group-sm">
-                                                    <a href="#" title="Detail" class="btn btn-info"><i
-                                                            class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('absen_detail', ['pertemuan' => $datas[$i]['id']]) }}"
+                                                        title="Detail" class="btn btn-info"><i class="fas fa-eye"></i></a>
                                                 </div>
                                                 <div class="btn-group btn-group-sm">
-                                                    <a href="#x" ata-toggle="modal"
+                                                    <a href="#" data-toggle="modal"
                                                         data-target="#modal-sm{{ $datas[$i]['id'] }}" title="Lihat Materi"
                                                         class="btn btn-primary"><i class="fas fa-download"></i></a>
                                                 </div>
@@ -71,22 +71,36 @@
                                                 <div class="modal-dialog modal-sm">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Hapus</h4>
+                                                            <h4 class="modal-title">Download Materi</h4>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            {{-- @for ($j = 0; $j < count($datas[$i]['pertemuan_materi']); $j++)
-                                                                <p>materi {{ $j }} <b>
-                                                            @endfor --}}
+                                                            @for ($j = 0; $j < count($datas[$i]['pertemuan_materi']); $j++)
+                                                                @if (count($datas[$i]['pertemuan_materi'][$j]['materi']['galeri']) === 0)
+                                                                    <p>
+                                                                        Tidak ada file
+                                                                    </p>
+                                                                @else
+                                                                    @php
+                                                                        $path = $datas[$i]['pertemuan_materi'][$j]['materi']['galeri'][0]['galeri_nama'];
+                                                                        $pathParts = explode('/', $path);
+                                                                        $lastWord = end($pathParts);
+                                                                    @endphp
+
+                                                                    <a
+                                                                        href="{{ route('atlet_download_materi', ['filename' => $lastWord]) }}">
+                                                                        <i class="fas fa-file" target="_blank"> Dwonload
+                                                                            Materi :
+                                                                            {{ $datas[$i]['pertemuan_materi'][$j]['materi']['materi_nama'] }}</i></a>
+                                                                @endif
+                                                            @endfor
                                                         </div>
                                                         <div class="modal-footer justify-content-between">
-                                                            <button type="button" class="btn btn-default"
+                                                            <button type="button" class="btn btn-danger"
                                                                 data-dismiss="modal">Tutup</button>
-                                                            <form <button type="submit" class="btn btn-primary">Ya</button>
-                                                            </form>
                                                         </div>
                                                     </div>
                                                     <!-- /.modal-content -->

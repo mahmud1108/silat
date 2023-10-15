@@ -45,6 +45,11 @@
 
                                 </tbody>
                             </table>
+                            @if ($absen->absen_waktu === null)
+                                <a href="{{ route('input_absen_jadwal', ['absen' => $absen->id]) }}"
+                                    class="btn btn-success">Absen
+                                    sekarang</a>
+                            @endif
                         </div>
                     </div>
                     <!-- /.card-body -->

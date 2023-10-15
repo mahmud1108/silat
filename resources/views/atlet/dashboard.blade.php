@@ -49,7 +49,7 @@
                         <div class="icon">
                             <i class="fa fa-graduation-cap"></i>
                         </div>
-                        <a href="{{ route('pertemuan') }}" class="small-box-footer">Selengkapnya <i
+                        <a href="" class="small-box-footer">Selengkapnya <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>

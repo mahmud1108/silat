@@ -53,11 +53,18 @@ route::middleware(['auth:atlet'])->prefix('/atlet')->group(function () {
     Route::get('/cek_rutin', [SidebarController::class, 'cek_rutin'])->name('cek');
     Route::get('/pengumuman', [SidebarController::class, 'pengumuman']);
 
+
     route::get('/input_absen/{absen}', [AbsenController::class, 'input_absen'])->name('input_absen');
     route::get('/absen_detail/{pertemuan}', [AbsenController::class, 'absen_detail'])->name('absen_detail');
 
+    // input absen melalui route('jadwal_detail')
+    route::get('/input_absen_jadwal/{absen}', [AbsenController::class, 'input_absen_jadwal'])->name('input_absen_jadwal');
+
     route::get('/pengumuman/{filename}', [PengumumanController::class, 'download'])->name('download_pengumuman');
     route::get('/jadwal/{jadwal}', [JadwalController::class, 'show'])->name('jadwal_detail');
+    route::get('/galeri/download/{filename}', [GaleriController::class, 'download'])->name('atlet_download_materi');
+
+    // route::get('/absen')
 });
 
 route::group(['middleware' => 'admin_pelatih'], function () {

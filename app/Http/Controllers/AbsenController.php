@@ -200,6 +200,18 @@ class AbsenController extends Controller
         return redirect('/atlet/absensi');
     }
 
+    public function input_absen_jadwal($absen)
+    {
+        Absen::where('atlet_id', auth()->user()->id)
+            ->where('id', $absen)
+            ->update([
+                'absen_waktu' => date("Y-m-d H:i:s")
+            ]);
+
+        toast("Berhasil absen", 'success');
+        return redirect()->back();
+    }
+
     public function absen_detail($pertemuan)
     {
         $absen = Absen::where('atlet_id', auth()->user()->id)
@@ -212,6 +224,12 @@ class AbsenController extends Controller
             ->where('pertemuan_id', $pertemuan->id)
             ->get();
 
-        return view('atlet.absen_detail', compact('absens'));
+        return view(
+            'atlet.absen_detail',
+            compact(
+                'absen',
+                'absens',
+            )
+        );
     }
 }

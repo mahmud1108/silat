@@ -99,8 +99,8 @@ class JadwalController extends Controller
                     'pertemuan_materi' => $pertemuan_materis
                 ];
         }
-
-        // return response()->json($datas);
+        // dd(count($datas[1]['pertemuan_materi'][1]['materi']['galeri']));
+        // return response()->json($datas[0]['pertemuan_materi'][0]['materi']['materi_nama']);
 
         return view('atlet.pertemuan', compact('datas', 'jadwal'));
     }

@@ -36,6 +36,7 @@
                                         <th>Nama jadwal</th>
                                         <th>Waktu</th>
                                         <th>Pelatih</th>
+                                        <th>Jumlah Pertemuan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -55,6 +56,13 @@
                                                 {{ $dateFormat }}
                                             </td>
                                             <td>{{ $jadwal_isi->jadwal->user->user_nama }}</td>
+
+                                            @if (count($jadwal_isi->jadwal->pertemuan) > 0)
+                                                <td>{{ count($jadwal_isi->jadwal->pertemuan) }}</td>
+                                            @else
+                                                <td>Belum ada pertemuan</td>
+                                            @endif
+
                                             <td class="text-center py-0 align-middle">
                                                 <div class="btn-group btn-group-sm">
                                                     <a href="{{ route('jadwal_detail', ['jadwal' => $jadwal_isi->jadwal->id]) }}"
