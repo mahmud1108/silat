@@ -24,21 +24,12 @@ class DashboardController extends Controller
     public function atlet()
     {
         $absen = Absen::where('atlet_id', auth()->user()->id)->whereNull('absen_waktu')->orderBy('id', 'desc')->first();
-        $pertemuan = Pertemuan::where('id', $absen->pertemuan_id)->first();
 
-        $cek_rutins = CekRutin::where('atlet_id', auth()->user()->id)->get();
-        foreach ($cek_rutins as $cek_rutin) {
-            $tinggi_badan[] = $cek_rutin->cr_tb;
-            $berat_badan[] = $cek_rutin->cr_bb;
-            $mental[] = $cek_rutin->cr_mental;
-            $fisik[] = $cek_rutin->cr_fisik;
-            $waktu[] = $cek_rutin->cr_waktu;
+        if ($absen != null) {
+            $pertemuan = Pertemuan::where('id', $absen->pertemuan_id)->first();
+        } else {
+            $pertemuan = 'kosong';
         }
-        $tinggi_badan = json_encode($tinggi_badan);
-        $berat_badan = json_encode($berat_badan);
-        $mental = json_encode($mental);
-        $fisik = json_encode($fisik);
-        $waktu = json_encode($waktu);
 
         $lastPengumuman = Pengumuman::latest()->first();
         $absen = Absen::where('atlet_id', auth()->user()->id)->count();
@@ -54,11 +45,6 @@ class DashboardController extends Controller
                 'absen',
                 'cek',
                 'lastPengumuman',
-                'tinggi_badan',
-                'berat_badan',
-                'mental',
-                'fisik',
-                'waktu'
             )
         );
     }
